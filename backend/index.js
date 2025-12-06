@@ -48,7 +48,17 @@ app.get('/api/mis-pelis', (req, res) => {
   });
 });
 
- 
+
+//Endpoint pelis en watchlist
+app.get('/api/mis-pelis/watchlist', (req, res) => {  
+    const pelis = leerPelis().filter(p => p.watchlist);
+
+    res.json({ 
+        watchlist: pelis
+    });
+});
+
+
 //Endpoint pelis por titulo 
 app.get('/api/mis-pelis/busqueda/titulo/:titulo', (req, res) => {  
     const titulo_pedido = req.params.titulo;
@@ -95,6 +105,11 @@ app.get('/api/mis-pelis/busqueda/generos/:generos', (req, res) => {
 });
 
 
+
+
+// ENDPOINTS POST ----------------------
+
+//Endpoint agregar pelicula
 
 
 
