@@ -1,0 +1,51 @@
+
+[
+    {
+        "id": 0,
+        "titulo": "Re-Animator",
+        "anio": "1985",
+        "duracion_minutos": 86,
+        "director": "Stuart Gordon",
+        "generos": ["Comedia", "Horror", "Sci-Fi"],
+        "rating_imdb": 7.1,
+        "rating_personal": 9.5,
+        "watchlist": true,
+        "resenia": "Gran personaje Herbert West"
+    },
+    {
+        "id": 1,
+        "titulo": "La La Land",
+        "anio": "2016",
+        "duracion_minutos": 128,
+        "director": "Damien Chazelle",
+        "generos": ["Comedia", "Drama", "Musica", "Musical", "Romance"],
+        "rating_imdb": 8.0,
+        "rating_personal": 8.5,
+        "watchlist": false,
+        "resenia": "Muy linda pelicula"
+    },
+    {
+        "id": 2,
+        "titulo": "Day of the dead",
+        "anio": "1985",
+        "duracion_minutos": 101,
+        "director": "George A. Romero",
+        "generos": ["Horror", "Thriller"],
+        "rating_imdb": 7.1,
+        "rating_personal": 10.0,
+        "watchlist": false,
+        "resenia": "La mejor pelicula de zombies"
+    },
+    {
+        "id": 3,
+        "titulo": "Heat",
+        "anio": "1995",
+        "duracion_minutos": 170,
+        "director": "Michael Mann",
+        "generos": ["Accion", "Crimen", "Drama"],
+        "rating_imdb": 8.3,
+        "rating_personal": 8.5,
+        "watchlist": true,
+        "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre"
+    }
+]

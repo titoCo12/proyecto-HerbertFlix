@@ -1,0 +1,29 @@
+{
+  "name": "proyecto-herbertflix",
+  "version": "1.0.0",
+  "description": "Proyecto libre para entrevista tecnica",
+  "main": "herbapp.js",
+  "scripts": {
+    "start": "node herbapp.js",
+    "nodemondev": "nodemon herbapp.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/titoCo12/proyecto-HerbertFlix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/titoCo12/proyecto-HerbertFlix/issues"
+  },
+  "homepage": "https://github.com/titoCo12/proyecto-HerbertFlix#readme",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
