@@ -2,10 +2,10 @@
   "name": "proyecto-herbertflix",
   "version": "1.0.0",
   "description": "Proyecto libre para entrevista tecnica",
-  "main": "herbapp.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node herbapp.js",
-    "nodemondev": "nodemon herbapp.js",
+    "start": "node index.js",
+    "nodemondev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

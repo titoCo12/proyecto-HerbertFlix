@@ -1,7 +1,16 @@
+// IMPORTS -----------------------------
+
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const herbapp = express();
+const app = express();
+const PORT = 3000;
+
+//middleware para post
+app.use(express.json());
+
+
+// FUNCIONES ---------------------------
 
 function leerPelis() {
     try {
@@ -15,9 +24,10 @@ function leerPelis() {
     }
 }
 
+// ENDPOINTS ---------------------------
 
-//Endpoint base 
-herbapp.get('/', (req, res) => {
+//Endpoint base - GET
+app.get('/', (req, res) => {
     res.json({
         titulo: "🎬 Herbert Flix",
         endpoints: [
@@ -27,8 +37,8 @@ herbapp.get('/', (req, res) => {
 });
 
 
-//Endpoint todas las pelis del usuario
-herbapp.get('/api/pelis', (req, res) => {
+//Endpoint todas las pelis del usuario - GET
+app.get('/api/pelis', (req, res) => {
   const pelis = leerPelis();
   res.json({
     mensaje: 'Peliculas del usuario',
@@ -38,8 +48,8 @@ herbapp.get('/api/pelis', (req, res) => {
 });
 
  
-//Endpoint pelis por titulo
-herbapp.get('/api/pelis/busquedaTitulo/:titulo', (req, res) => {
+//Endpoint pelis por titulo - GET
+app.get('/api/pelis/busqueda-titulo/:titulo', (req, res) => {
     
     const titulo_pedido = req.params.titulo;
     const titulo_lower = titulo_pedido.toLowerCase();
@@ -58,6 +68,8 @@ herbapp.get('/api/pelis/busquedaTitulo/:titulo', (req, res) => {
 
 //Endpoint pelis por genero
 
-herbapp.listen(3000, () => { 
-    console.log("corriendo");
+// INICIO ------------------------------
+
+app.listen(PORT, () => { 
+    console.log(`Corriendo en http://localhost:${PORT}`);
 });
