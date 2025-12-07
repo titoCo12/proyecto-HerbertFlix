@@ -10,16 +10,6 @@ const PORT = 3000;
 app.use(express.json());
 
 
-// VALIDACIONES ------------------------
-
-function validarPeliNueva(peli) {
-    validarAtributosPeli(peli);
-    validarPeliRepetida(peli);
-}
-
-
-
-
 // FUNCIONES ---------------------------
 
 function leerPelis() {
@@ -33,6 +23,7 @@ function leerPelis() {
         return [];
     }
 }
+
 
 function agregarPeli(peli) {
     try {
@@ -63,14 +54,14 @@ function filtrarPelis(texto, pelis) {
 function ordenarPelis(orden, ordenar_por, pelis) {
     const ordenDir = orden === 'desc' ? -1 : 1; // DESC - ASC    
 
-    //ordeno copia
+    //ordeno copia para no ordenar original
     return [...pelis].sort((a, b) => {
             switch(ordenar_por) {
                 case 'anio':
                     return (a.anio - b.anio) * ordenDir;
 
                 case 'rating_personal':
-                    // considero falta de rating personal como 0 para ordenar
+                    // falta de rating personal (null) siempre va al fondo 
                     if (a.rating_personal === null && b.rating_personal === null) return 0;
                     if (a.rating_personal === null) return 1;  
                     if (b.rating_personal === null) return -1; 
@@ -87,6 +78,7 @@ function ordenarPelis(orden, ordenar_por, pelis) {
 
 // ENDPOINTS GET ---------------------------
 
+
 //Endpoint base 
 app.get('/', (req, res) => {
     res.json({
@@ -98,97 +90,46 @@ app.get('/', (req, res) => {
 });
 
 
-//Endpoint todas las pelis del usuario
 app.get('/api/mis-pelis', (req, res) => {
-  
-  try {
-    const pelis = leerPelis();
-    res.json({
-        mensaje: 'Peliculas del usuario',
-        total: pelis.length,
-        peliculas: pelis
-    });
-  } 
-  catch (error) {
-
-  } 
-
-});
-
-
-
-//Endpoint todas las pelis del usuario
-app.get('/api/mis-pelis/busqueda', (req, res) => {
-  
-  try {
-    let pelis = leerPelis();
-
-    //busqueda
-    const {texto, ordenar_por, orden} = req.query;
-
-    //filtrado
-    if (texto) {
-        pelis = filtrarPelis(texto, pelis);
-    }
-
-    //orden
-    if (ordenar_por) {
-        pelis = ordenarPelis(orden, ordenar_por, pelis);    
-    }
-
-    res.json({
-        mensaje: 'Pelis filtradas',
-        resultados: pelis.length,
-        peliculas: pelis
-    });
-  } 
-  
-  catch (error) {
-    console.error('Error en GET /api/mis-pelis:', error.message);
-    res.status(500).json({ error: error.message });
-  } 
-
-});
-
-
-//Endpoint pelis en watchlist
-app.get('/api/mis-pelis/busqueda/watchlist', (req, res) => {
-    
     try {
-    let pelis = leerPelis();
-    pelis = pelis.filter(p => p.watchlist);
-
-    //busqueda
-    const {texto, ordenar_por, orden} = req.query;
-
-    //filtrado
-    if (texto) {
-        pelis = filtrarPelis(texto, pelis);
+        let pelis = leerPelis();
+        
+        const { q:texto, watchlist, ordenar_por, orden } = req.query;
+        
+        // FILTRADO POR WATCHLIST
+        if (watchlist === 'true') {
+            pelis = pelis.filter(p => p.watchlist === true);
+        }
+        
+        // BÚSQUEDA POR TEXTO
+        if (texto) {
+            pelis = filtrarPelis(texto, pelis);
+        }
+        
+        // ORDENAMIENTO
+        if (ordenar_por) {
+            pelis = ordenarPelis(orden, ordenar_por, pelis);
+        }
+        
+        // RESPUESTA
+        res.json({
+            mensaje: watchlist === 'true' ? 'Pelis en watchlist' : 'Todas las pelis',
+            filtros: { texto, watchlist, ordenar_por, orden },
+            resultados: pelis.length,
+            peliculas: pelis
+        });
+        
+    } catch (error) {
+        console.error('Error en GET /api/mis-pelis:', error.message);
+        res.status(500).json({ error: error.message });
     }
-
-    //orden
-    if (ordenar_por) {
-        pelis = ordenarPelis(orden, ordenar_por, pelis);    
-    }
-
-    res.json({
-        mensaje: 'Pelis filtradas',
-        resultados: pelis.length,
-        peliculas: pelis
-    });
-  } 
-  
-  catch (error) {
-    console.error('Error en GET /api/mis-pelis:', error.message);
-    res.status(500).json({ error: error.message });
-  } 
 });
 
 
 // ENDPOINTS POST ----------------------
 
-//Endpoint agregar pelicula
-app.post('api/mis-pelis', (req,res) => {
+//Endpoint agregar 'visualización' de pelicula
+app.post('/api/mis-pelis', (req,res) => {
     try {
         const datos = req.body;
         
@@ -226,8 +167,10 @@ app.post('api/mis-pelis', (req,res) => {
             id: nuevoId,
             registro: nuevaVisualizacion
         });
+
     } catch (error) {
-        
+        console.error('Error en POST /api/mis-pelis:', error.message);
+        res.status(500).json({ error: error.message });
     }
     
 })
