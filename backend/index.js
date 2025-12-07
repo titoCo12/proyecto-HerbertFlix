@@ -10,35 +10,39 @@ const PORT = 3000;
 app.use(express.json());
 
 
-// FUNCIONES ---------------------------
+// HELPERS -----------------------------
 
-function leerPelis() {
+function leerPelis(archivo) {
     try {
-        const ruta = path.join(__dirname, "localdata", "pelis.json");
+        const ruta = path.join(__dirname, "localdata", `${archivo}.json`);
         const pelis = fs.readFileSync(ruta, 'utf-8');
         return JSON.parse(pelis);
     }
     catch (error) {
-        console.error('Error leyendo peliculas:', error);
+        console.error(`Error leyendo ${archivo}.json`, error);
         return [];
     }
 }
 
 
-function agregarPeli(peli) {
+function guardarDatos(coleccion, archivo) {
     try {
-        const ruta = path.join(__dirname, "localdata", "pelis.json");
-        const pelis = leerPelis();
-        pelis.push(peli);
+        const ruta = path.join(__dirname, "localdata", `${archivo}.json`);
         
-        //reescribo
-        const datos = JSON.stringify(pelis, null, 2);
+        const datos = JSON.stringify(coleccion, null, 2);
         fs.writeFileSync(ruta, datos, 'utf-8');
         
     } catch (error) {
-        console.error('Error agregando película:', error);
+        console.error(`Error escribiendo en ${archivo}.json:`, error);
         throw new Error('Error guardando película');
     }
+}
+
+
+function agregarRegistro(peli, archivo) {
+    const coleccion = leerArchivo(archivo);
+    coleccion.push(peli);
+    guardarDatos(coleccion, archivo);
 }
 
 
@@ -77,67 +81,66 @@ function ordenarPelis(orden, ordenar_por, pelis) {
 }
 
 
-// ENDPOINTS GET ---------------------------
+// ENDPOINTS ---------------------------
 
 //Endpoint base 
-// valores de filtro watchlist: true - false
 // valores de filtro ordenar_por: anio - rating_personal - fecha_visto
 // valores de ordenamiento orden: asc - desc
 app.get('/', (req, res) => {
     res.json({
     titulo: "🎬 Herbert Flix 🎬",
-    endpoints: { 
-        ver_todas_las_pelis: 'GET /api/mis-pelis',
-        ver_watchlist: 'GET /api/mis-pelis?watchlist=true',
-        buscar_por_texto_watchlist_orden: 'GET /api/mis-pelis?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>&watchlist=<true-false>',
-        buscar_peli_por_id: 'GET /api/mis-pelis/:id',
-        agregar_peli: 'POST /api/mis-pelis',
-        eliminar_visualizaciones_peli: 'DELETE /api/mis-pelis/des-ver/:imdb_id'}
+    endpoints_de_visualizaciones: { 
+        ver_todas_las_pelis: 'GET /api/mis-pelis/vistas',
+        buscar_por_texto_orden: 'GET /api/mis-pelis/vistas?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>',
+        buscar_peli_por_id: 'GET /api/mis-pelis/vistas/:id',
+        agregar_peli: 'POST /api/mis-pelis/vistas',
+        eliminar_visualizaciones_peli: 'DELETE /api/mis-pelis/des-ver/:imdb_id'},
+    endpoints_de_watchlist: {
+        ver_watchlist: 'GET /api/watchlist',
+        buscar_por_texto_orden: 'GET /api/mis-pelis/watchlist?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>',
+        agregar_a_watchlist: 'POST /api/mis-pelis/watchlist',
+        eliminar_de_watchlist: 'DELETE /api/mis-pelis/watchlist/:imdb_id'
+    }
     });
 });
 
+// ENDPOINTS DE VISTAS -----------------
 
-app.get('/api/mis-pelis', (req, res) => {
+//Endpoint buscar visualizaciones de pelis
+app.get('/api/mis-pelis/vistas', (req, res) => {
     try {
-        let pelis = leerPelis();
-        
-        const { q:texto, watchlist, ordenar_por, orden } = req.query;
-        
-        // FILTRADO POR WATCHLIST
-        if (watchlist === 'true') {
-            pelis = pelis.filter(p => p.watchlist === true);
-        }
-        
-        // BÚSQUEDA POR TEXTO
+        let pelis = leerPelis('vistas');
+        const { q:texto, ordenar_por, orden } = req.query;
+       
+        // filtro por texto
         if (texto) {
             pelis = filtrarPelis(texto, pelis);
         }
         
-        // ORDENAMIENTO
+        // orden
         if (ordenar_por) {
             pelis = ordenarPelis(orden, ordenar_por, pelis);
         }
         
-        // RESPUESTA
         res.json({
-            mensaje: watchlist === 'true' ? 'Pelis en watchlist' : 'Todas las pelis',
-            filtros: { texto, watchlist, ordenar_por, orden },
+            busqueda: "visualizaciones registradas",
+            filtros: { texto, ordenar_por, orden },
             resultados: pelis.length,
-            peliculas: pelis
+            visualizaciones: pelis
         });
         
     } catch (error) {
-        console.error('Error en GET /api/mis-pelis:', error.message);
+        console.error('Error en GET /api/mis-pelis/vistas:', error.message);
         res.status(500).json({ error: error.message });
     }
 });
 
 
 //Endpoint peli por id (dev)
-app.get('/api/mis-pelis/:id', (req, res) => {
+app.get('/api/mis-pelis/vistas/:id', (req, res) => {
     try {
         const id = req.params.id;
-        const peli = leerPelis().find(p => p.id == id);
+        const peli = leerPelis('vistas').find(p => p.id == id);
         
         if (!peli) {
             return res.status(404).json({ 
@@ -152,16 +155,14 @@ app.get('/api/mis-pelis/:id', (req, res) => {
         });
         
     } catch (error) {
-        console.error('Error en GET /api/mis-pelis/:id:', error.message);
+        console.error('Error en GET /api/mis-pelis/vistas/:id:', error.message);
         res.status(500).json({ error: error.message });
     }
 });
 
 
-// ENDPOINTS POST ----------------------
-
 //Endpoint agregar 'visualización' de pelicula
-app.post('/api/mis-pelis', (req,res) => {
+app.post('/api/mis-pelis/vistas', (req,res) => {
     try {
         const datos = req.body;
         
@@ -174,12 +175,9 @@ app.post('/api/mis-pelis', (req,res) => {
                 throw new Error('rating_personal debe estar entre 0 y 10');
             }
         }
-
-        //uso timestamp para los id asi evito repetidos
-        const nuevoId = Date.now();
         
         const nuevaVisualizacion = {
-            id: nuevoId,
+            id: Date.now(),            //timestamp para los id para evitar repetidos
             imdb_id: datos.imdb_id,
             titulo: datos.titulo,
             anio: datos.anio,
@@ -189,11 +187,11 @@ app.post('/api/mis-pelis', (req,res) => {
             rating_imdb: datos.rating_imdb,
             rating_personal: datos.rating_personal !== undefined ? datos.rating_personal : null,
             resenia: datos.resenia || "",
-            fecha_visto: new Date().toISOString().split('T')[0],
-            watchlist: false,
+            fecha_visto: new Date().toISOString().split('T')[0]
         };
         
-        agregarPeli(nuevaVisualizacion);
+        agregarRegistro(nuevaVisualizacion, 'vistas');
+
         res.status(201).json({
             mensaje: "peli registrada",
             id: nuevoId,
@@ -201,21 +199,19 @@ app.post('/api/mis-pelis', (req,res) => {
         });
 
     } catch (error) {
-        console.error('Error en POST /api/mis-pelis:', error.message);
+        console.error('Error en POST /api/mis-pelis/vistas:', error.message);
         res.status(500).json({ error: error.message });
     }
     
 })
 
 
-//ENDPOINTS DELETE ---------------------
-
 //Endpoint eliminar visualizaciones de una pelicula
 app.delete('/api/mis-pelis/des-ver/:imdb_id', (req, res) => {
     try {
         const imdb_id = req.params.imdb_id;
         
-        let pelis = leerPelis();
+        let pelis = leerPelis('vistas');
         const total = pelis.length;
     
         const pelisEliminadas = pelis.filter(p => p.imdb_id === imdb_id);
@@ -230,9 +226,7 @@ app.delete('/api/mis-pelis/des-ver/:imdb_id', (req, res) => {
         }
         
         // reescribo
-        const ruta = path.join(__dirname, "localdata", "pelis.json");
-        const datos = JSON.stringify(pelisFinal, null, 2);
-        fs.writeFileSync(ruta, datos, 'utf-8');
+        guardarDatos(pelisFinal, 'vistas');
         
         // Respuesta exitosa
         res.json({
@@ -245,10 +239,17 @@ app.delete('/api/mis-pelis/des-ver/:imdb_id', (req, res) => {
         });
         
     } catch (error) {
-        console.error('Error en DELETE /api/mis-pelis/imdb/:imdb_id:', error.message);
+        console.error('Error en DELETE /api/mis-pelis/des-ver/:imdb_id:', error.message);
         res.status(500).json({ error: error.message });
     }
 });
+
+
+// ENDPOINTS WATCHLIST -----------------
+
+
+
+
 
 // INICIO ------------------------------
 

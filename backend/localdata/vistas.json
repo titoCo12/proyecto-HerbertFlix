@@ -10,7 +10,6 @@
         "generos": ["Comedia", "Horror", "Sci-Fi"],
         "rating_imdb": 7.1,
         "rating_personal": 9.5,
-        "watchlist": true,
         "resenia": "Gran personaje Herbert West",
         "fecha_visto": "2024-06-15"
     },
@@ -24,7 +23,6 @@
         "generos": ["Comedia", "Drama", "Música", "Musical", "Romance"],
         "rating_imdb": 8.0,
         "rating_personal": 8.5,
-        "watchlist": false,
         "resenia": "Muy linda pelicula",
         "fecha_visto": "2023-10-12"
     },
@@ -38,7 +36,6 @@
         "generos": ["Horror", "Thriller"],
         "rating_imdb": 7.1,
         "rating_personal": 10.0,
-        "watchlist": false,
         "resenia": "La mejor pelicula de zombies",
         "fecha_visto": "2023-09-12"
     },
@@ -52,7 +49,6 @@
         "generos": ["Acción", "Crimen", "Drama"],
         "rating_imdb": 8.3,
         "rating_personal": 8.5,
-        "watchlist": true,
         "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre",
         "fecha_visto": "2025-11-25"
     }
