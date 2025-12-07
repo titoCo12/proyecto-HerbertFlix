@@ -51,6 +51,40 @@ function agregarPeli(peli) {
 }
 
 
+function filtrarPelis(texto, pelis) {
+    const textoLow = texto.toLowerCase().replace(/[^a-z0-9]/g, '');
+    //case insensitive y solo me quedo alfanumericos
+    return pelis.filter(p => 
+        p.titulo.toLowerCase().replace(/[^a-z0-9]/g, '').includes(textoLow) ||
+        p.director.toLowerCase().replace(/[^a-z0-9]/g, '').includes(textoLow));
+}
+
+
+function ordenarPelis(orden, ordenar_por, pelis) {
+    const ordenDir = orden === 'desc' ? -1 : 1; // DESC - ASC    
+
+    //ordeno copia
+    return [...pelis].sort((a, b) => {
+            switch(ordenar_por) {
+                case 'anio':
+                    return (a.anio - b.anio) * ordenDir;
+
+                case 'rating_personal':
+                    // considero falta de rating personal como 0 para ordenar
+                    if (a.rating_personal === null && b.rating_personal === null) return 0;
+                    if (a.rating_personal === null) return 1;  
+                    if (b.rating_personal === null) return -1; 
+                    return (a.rating_personal - b.rating_personal) * ordenDir;
+                    
+                case 'fecha_visto':
+                    return (new Date(a.fecha_visto) - new Date(b.fecha_visto)) * ordenDir;
+                    
+                default:
+                    return 0;
+            }
+    });
+}
+
 // ENDPOINTS GET ---------------------------
 
 //Endpoint base 
@@ -82,32 +116,74 @@ app.get('/api/mis-pelis', (req, res) => {
 });
 
 
+
+//Endpoint todas las pelis del usuario
+app.get('/api/mis-pelis/busqueda', (req, res) => {
+  
+  try {
+    let pelis = leerPelis();
+
+    //busqueda
+    const {texto, ordenar_por, orden} = req.query;
+
+    //filtrado
+    if (texto) {
+        pelis = filtrarPelis(texto, pelis);
+    }
+
+    //orden
+    if (ordenar_por) {
+        pelis = ordenarPelis(orden, ordenar_por, pelis);    
+    }
+
+    res.json({
+        mensaje: 'Pelis filtradas',
+        resultados: pelis.length,
+        peliculas: pelis
+    });
+  } 
+  
+  catch (error) {
+    console.error('Error en GET /api/mis-pelis:', error.message);
+    res.status(500).json({ error: error.message });
+  } 
+
+});
+
+
 //Endpoint pelis en watchlist
-app.get('/api/mis-pelis/watchlist', (req, res) => {  
-    const pelis = leerPelis().filter(p => p.watchlist);
+app.get('/api/mis-pelis/busqueda/watchlist', (req, res) => {
+    
+    try {
+    let pelis = leerPelis();
+    pelis = pelis.filter(p => p.watchlist);
 
-    res.json({ 
-        watchlist: pelis
+    //busqueda
+    const {texto, ordenar_por, orden} = req.query;
+
+    //filtrado
+    if (texto) {
+        pelis = filtrarPelis(texto, pelis);
+    }
+
+    //orden
+    if (ordenar_por) {
+        pelis = ordenarPelis(orden, ordenar_por, pelis);    
+    }
+
+    res.json({
+        mensaje: 'Pelis filtradas',
+        resultados: pelis.length,
+        peliculas: pelis
     });
+  } 
+  
+  catch (error) {
+    console.error('Error en GET /api/mis-pelis:', error.message);
+    res.status(500).json({ error: error.message });
+  } 
 });
 
-
-//Endpoint pelis por titulo 
-app.get('/api/mis-pelis/busqueda/titulo/:titulo', (req, res) => {  
-    const titulo_pedido = req.params.titulo;
-    const titulo_lower = titulo_pedido.toLowerCase();
-
-    const pelis = leerPelis().filter(p => 
-        p.titulo.toLowerCase()       // no es case sensitive
-        .replace(/[^a-z0-9]/gi, '')  // solo considero alfanumericos
-        .includes(titulo_pedido));
-
-    res.json({ 
-        titulo_pedido: titulo_pedido,
-        cant_resultados: pelis.length,
-        resultados: pelis
-    });
-});
 
 // ENDPOINTS POST ----------------------
 
