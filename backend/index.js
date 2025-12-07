@@ -10,6 +10,16 @@ const PORT = 3000;
 app.use(express.json());
 
 
+// VALIDACIONES ------------------------
+
+function validarPeliNueva(peli) {
+    validarAtributosPeli(peli);
+    validarPeliRepetida(peli);
+}
+
+
+
+
 // FUNCIONES ---------------------------
 
 function leerPelis() {
@@ -21,6 +31,22 @@ function leerPelis() {
     catch (error) {
         console.error('Error leyendo peliculas:', error);
         return [];
+    }
+}
+
+function agregarPeli(peli) {
+    try {
+        const ruta = path.join(__dirname, "localdata", "pelis.json");
+        const pelis = leerPelis();
+        pelis.push(peli);
+        
+        //reescribo
+        const datos = JSON.stringify(pelis, null, 2);
+        fs.writeFileSync(ruta, datos, 'utf-8');
+        
+    } catch (error) {
+        console.error('Error agregando película:', error);
+        throw new Error('Error guardando película');
     }
 }
 
@@ -40,12 +66,19 @@ app.get('/', (req, res) => {
 
 //Endpoint todas las pelis del usuario
 app.get('/api/mis-pelis', (req, res) => {
-  const pelis = leerPelis();
-  res.json({
-    mensaje: 'Peliculas del usuario',
-    total: pelis.length,
-    peliculas: pelis
-  });
+  
+  try {
+    const pelis = leerPelis();
+    res.json({
+        mensaje: 'Peliculas del usuario',
+        total: pelis.length,
+        peliculas: pelis
+    });
+  } 
+  catch (error) {
+
+  } 
+
 });
 
 
@@ -76,41 +109,52 @@ app.get('/api/mis-pelis/busqueda/titulo/:titulo', (req, res) => {
     });
 });
 
-
-//Endpoint pelis por genero
-//Recibe un string con la forma "gen1, gen2.." de parametro
-app.get('/api/mis-pelis/busqueda/generos/:generos', (req, res) => {
-    try {
-        const generos = req.params.generos
-            .split(",")
-            .map(g => decodeURIComponent(g) //atajo acentos
-                .trim()                     //saco espacios
-                .toLowerCase());           
-
-        const pelis = leerPelis().filter(p => 
-            p.generos && generos.every(gen =>         
-                p.generos.map(g => g.toLowerCase()).includes(gen) 
-            ));
-
-        res.json({
-            generos: generos,
-            cant_resultados: pelis.length,
-            resultados: pelis
-        })
-    }
-
-    catch (error) {
-        res.status(400).json({ error: "Formato de Generos no valido"})
-    }
-});
-
-
-
-
 // ENDPOINTS POST ----------------------
 
 //Endpoint agregar pelicula
+app.post('api/mis-pelis', (req,res) => {
+    try {
+        const datos = req.body;
+        
+        //validaciones
+        if (!datos.imdb_id) {
+            throw new Error('falta id de imdb');
+        }
+        else if (datos.rating_personal !== undefined) {
+            if (datos.rating_personal < 0 || datos.rating_personal > 10) {
+                throw new Error('rating_personal debe estar entre 0 y 10');
+            }
+        }
 
+        //uso timestamp para los id asi evito repetidos
+        const nuevoId = Date.now();
+        
+        const nuevaVisualizacion = {
+            id: nuevoId,
+            imdb_id: datos.imdb_id,
+            titulo: datos.titulo,
+            anio: datos.anio,
+            duracion_minutos: datos.duracion_minutos,
+            director: datos.director,
+            generos: datos.generos,
+            rating_imdb: datos.rating_imdb,
+            rating_personal: datos.rating_personal !== undefined ? datos.rating_personal : null,
+            resenia: datos.resenia || "",
+            fecha_visto: new Date().toISOString().split('T')[0],
+            watchlist: false,
+        };
+        
+        agregarPeli(nuevaVisualizacion);
+        res.status(201).json({
+            mensaje: "peli registrada",
+            id: nuevoId,
+            registro: nuevaVisualizacion
+        });
+    } catch (error) {
+        
+    }
+    
+})
 
 
 // INICIO ------------------------------

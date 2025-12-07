@@ -1,7 +1,8 @@
 
 [
     {
-        "id": 0,
+        "id": 1765072317706,
+        "imdb_id": "tt0089885",
         "titulo": "Re-Animator",
         "anio": "1985",
         "duracion_minutos": 86,
@@ -10,10 +11,12 @@
         "rating_imdb": 7.1,
         "rating_personal": 9.5,
         "watchlist": true,
-        "resenia": "Gran personaje Herbert West"
+        "resenia": "Gran personaje Herbert West",
+        "fecha_visto": "2024-06-15"
     },
     {
-        "id": 1,
+        "id": 1765072317707,
+        "imdb_id": "tt3783958",
         "titulo": "La La Land",
         "anio": "2016",
         "duracion_minutos": 128,
@@ -22,10 +25,12 @@
         "rating_imdb": 8.0,
         "rating_personal": 8.5,
         "watchlist": false,
-        "resenia": "Muy linda pelicula"
+        "resenia": "Muy linda pelicula",
+        "fecha_visto": "2023-10-12"
     },
     {
-        "id": 2,
+        "id": 1765072317708,
+        "imdb_id": "tt0088993",
         "titulo": "Day of the dead",
         "anio": "1985",
         "duracion_minutos": 101,
@@ -34,10 +39,12 @@
         "rating_imdb": 7.1,
         "rating_personal": 10.0,
         "watchlist": false,
-        "resenia": "La mejor pelicula de zombies"
+        "resenia": "La mejor pelicula de zombies",
+        "fecha_visto": "2023-09-12"
     },
     {
-        "id": 3,
+        "id": 1765072317709,
+        "imdb_id": "tt0113277",
         "titulo": "Heat",
         "anio": "1995",
         "duracion_minutos": 170,
@@ -46,6 +53,7 @@
         "rating_imdb": 8.3,
         "rating_personal": 8.5,
         "watchlist": true,
-        "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre"
+        "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre",
+        "fecha_visto": "2025-11-25"
     }
 ]
