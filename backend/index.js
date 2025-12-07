@@ -91,7 +91,8 @@ app.get('/', (req, res) => {
         ver_watchlist: 'GET /api/mis-pelis?watchlist=true',
         buscar_por_texto_watchlist_orden: 'GET /api/mis-pelis?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>&watchlist=<true-false>',
         buscar_peli_por_id: 'GET /api/mis-pelis/:id',
-        agregar_peli: 'POST /api/mis-pelis'}
+        agregar_peli: 'POST /api/mis-pelis',
+        eliminar_visualizaciones_peli: 'DELETE /api/mis-pelis/des-ver/:imdb_id'}
     });
 });
 
