@@ -18,7 +18,7 @@ router.get('/busqueda', async (req, res) => {
         const resultados = await buscarPelisOMDB(txt);
         
         res.json({
-            mensaje: `Resultados de "${txt}"`,
+            mensaje: `Resultados de '${txt}'`,
             resultados: resultados
         });
         
