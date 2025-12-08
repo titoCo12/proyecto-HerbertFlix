@@ -2,6 +2,13 @@ const axios = require('axios');
 const OMDB_API_KEY = 'e29a1fcc'
 const OMDB_URL = 'http://www.omdbapi.com/';
 
+//refactor para no repetir tanto
+function normalizarTexto(t) {
+    if (t === 'N/A' || t === undefined || t === null) {
+        return '';
+    }
+    return t.trim();
+}
 
 //resultado de pelis listadas
 async function buscarPelisOMDB(texto) {
@@ -10,7 +17,7 @@ async function buscarPelisOMDB(texto) {
 
         const pedido = await axios.get(OMDB_URL, {
             params: {
-                apikey: OMDB_API_KEY,     //parametro obligatorio
+                apikey: OMDB_API_KEY,     
                 s: texto,
                 type: 'movie',
                 page: 1
@@ -47,7 +54,7 @@ async function obtenerDetallesPeli(imdb_id) {
         const pedido = await axios.get(OMDB_URL, {
             params: {
                 apikey: OMDB_API_KEY,
-                i: imdb_id,           //busqueda especifica id
+                i: imdb_id,           
                 plot: 'short'         //descripcion corta
             }
         });
@@ -57,17 +64,17 @@ async function obtenerDetallesPeli(imdb_id) {
 
             return {
                 imdb_id: resultado.imdbID,
-                titulo: resultado.Title,
-                anio: resultado.Year || "",
+                titulo: normalizarTexto(resultado.Title),
+                anio: normalizarTexto(resultado.Year),
                 duracion_minutos: parseInt(resultado.Runtime) || 0,
-                director: resultado.Director || "",
-                generos: resultado.Genre || "",
+                director: normalizarTexto(resultado.Director),
+                generos: normalizarTexto(resultado.Genre),
                 rating_imdb: parseFloat(resultado.imdbRating) || 0,
-                sinopsis: resultado.Plot || "",
+                sinopsis: normalizarTexto(resultado.Plot),
                 poster: resultado.Poster !== "N/A" ? resultado.Poster : null,
-                actores: resultado.Actors || "",
-                pais: resultado.Country || "",
-                idioma: resultado.Language || ""
+                actores: normalizarTexto(resultado.Actors),
+                pais: normalizarTexto(resultado.Country),
+                idioma: normalizarTexto(resultado.Language)
             };
         } else {
             console.log('Pelicula no encontrada en OMDb');

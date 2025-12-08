@@ -72,7 +72,7 @@ router.post('/vistas', (req,res) => {
             imdb_id: datos.imdb_id,
             titulo: datos.titulo,
             anio: datos.anio,
-            duracion_minutos: datos.duracion_minutos || 0,  //si omdb no me da duracion el parseInt devuelve NaN
+            duracion_minutos: datos.duracion_minutos,
             director: datos.director,
             generos: datos.generos,
             rating_imdb: datos.rating_imdb,
