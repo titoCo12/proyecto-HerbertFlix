@@ -1,15 +1,24 @@
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
-// Importar rutas
+// rutas
 const vistasRoutes = require('./routes/vistas.routes');
 const watchlistRoutes = require('./routes/watchlist.routes');
 const busquedaOMDBRoutes = require('./routes/busquedaOMBD.routes');
 
 // middleware
+
+app.use(cors({
+    origin: 'http://localhost:5500',  
+    methods: ['GET', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
+
 app.use(express.json());
+
 // rutas para endpoints de vistas, watchlist y busqueda con OMDB
 app.use('/api/mis-pelis', vistasRoutes);
 app.use('/api/mis-pelis', watchlistRoutes);
