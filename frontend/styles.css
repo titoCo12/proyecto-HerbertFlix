@@ -78,6 +78,11 @@
     margin-bottom: 20px;
 }
 
+.vh-100 {
+    background-color: #c6c6c7;
+}
+
+
 .contenido {
     background-color: #e2e2e6;
     height: 100vh;

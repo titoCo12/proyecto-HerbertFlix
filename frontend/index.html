@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herbert Flix</title>
+    <title>HerbertFlix</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96x96.png">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 <body>
     <header class="header">
@@ -23,14 +24,33 @@
             </div>
         </div>
 
-        <!-- Bloque derecho: título + logo -->
         <div class="header-right">
             <h1>HerbertFlix</h1>
             <img id="logo" src="assets/icono-herb.png" alt="logo">
         </div>
     </header>
-    <main class="contenido">
-        
+    <main class="container-fluid px-0 mt-0">
+        <div class="row g-0">
+            <!-- Columna izquierda: Lista de películas (4 columnas en pantallas grandes) -->
+            <div class="col-lg-4 col-md-5 p-0">
+                <div id="columna-izquierda" class="vh-100">
+                    
+                <!-- Contenido dinámico según el botón del header -->
+                </div>
+            </div>
+
+            <!-- Columna derecha: Detalle de película (8 columnas en pantallas grandes) -->
+            <div class="col-lg-8 col-md-7 p-0">
+                <div class="card rounded-0 h-100">
+                    <div class="card-body text-center py-5">
+                        <div class="text-muted mb-3">
+                            <h4>Select a movie to see details</h4>
+                            <i class="bi bi-film display-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 </html>
