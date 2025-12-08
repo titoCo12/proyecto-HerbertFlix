@@ -61,6 +61,9 @@ router.post('/vistas', (req,res) => {
         if (!datos.imdb_id) {
             throw new Error('falta id de imdb');
         }
+        else if (!datos.imdb_id.startsWith('tt')) {
+             throw new Error('imdb_id no valido');
+        }
         else if (datos.rating_personal !== undefined) {
             if (datos.rating_personal < 0 || datos.rating_personal > 10) {
                 throw new Error('rating_personal debe estar entre 0 y 10');
