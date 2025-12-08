@@ -1,0 +1,86 @@
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3d403b;
+    gap: 0px;
+    height: 70px;
+    padding: 10px 20px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
+
+.btn {
+    background-color: #2d302b;
+    font-size: large;
+    color:rgb(69, 145, 60);
+    
+}
+.btn:hover {
+    background-color:#384234;
+    color: rgb(85, 174, 75);
+}
+
+.btn-search {
+    background-color: #2d302b;
+    font-size: large;
+    color:rgb(69, 145, 60);
+    border: none;
+    font-size: large;
+    border-radius: 5px;
+}
+.btn-search:hover {
+    background-color:#384234;
+    color: rgb(85, 174, 75);
+    
+}
+
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-box input {
+    padding: 5px;
+    background-color: rgb(47, 51, 44);
+    border-color: #2b2e2a;
+    height: 35px;
+}
+.search-box input::placeholder {
+    color: rgb(69, 145, 60);
+}
+.search-box input:focus{
+    background-color: rgb(64, 68, 62);
+    border-color: rgb(69, 145, 60);
+    border-width: 2px;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    color: rgb(118, 253, 100);
+    font-family: 'Fjalla One', sans-serif;
+    height: 40px;
+}
+
+#logo {
+    width: 85px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.contenido {
+    background-color: #e2e2e6;
+    height: 100vh;
+}
+
+
