@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
     <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96x96.png">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/frontend/app.js"></script>
 </head>
 <body>
     <header class="header">
         <div class="header-left">
-            <button class="btn" id="watch_btn">Watchlist</button>
+            <button class="btn" id="watch_btn" onclick="cargarWatchlist()">Watchlist</button>
             <button class="btn" id="logs_btn">Logs</button>
 
             <div class="search-box">
@@ -31,7 +32,6 @@
     </header>
     <main class="container-fluid px-0 mt-0">
         <div class="row g-0">
-            <!-- Columna izquierda: Lista de películas (4 columnas en pantallas grandes) -->
             <div class="col-lg-4 col-md-5 p-0">
                 <div id="columna-izquierda" class="vh-100">
                     
@@ -39,7 +39,6 @@
                 </div>
             </div>
 
-            <!-- Columna derecha: Detalle de película (8 columnas en pantallas grandes) -->
             <div class="col-lg-8 col-md-7 p-0">
                 <div class="card rounded-0 h-100">
                     <div class="card-body text-center py-5">

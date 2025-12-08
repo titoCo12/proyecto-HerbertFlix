@@ -51,7 +51,7 @@
     padding: 5px;
     background-color: rgb(47, 51, 44);
     border-color: #2b2e2a;
-    height: 35px;
+    height: 40px;
 }
 .search-box input::placeholder {
     color: rgb(69, 145, 60);
@@ -82,6 +82,20 @@
     background-color: #c6c6c7;
 }
 
+#columna-izquierda .lista-scrollable {
+    max-height: calc(100vh - 60px); /* Ajusta según el header */
+    overflow-y: auto;
+}
+
+#columna-izquierda .pelicula-item {
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+#columna-izquierda .pelicula-item:hover {
+    background-color: rgba(0,0,0,0.05);
+    border-left-color: #007bff;
+}
 
 .contenido {
     background-color: #e2e2e6;
