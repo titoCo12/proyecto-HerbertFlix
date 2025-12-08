@@ -16,15 +16,15 @@ app.use('/api/mis-pelis', watchlistRoutes);
 app.use('/api', busquedaOMDBRoutes);
 
 
-
-//Endpoint base 
+//Endpoint base
+// busqueda con 1 o 2 letras suele devolver vacio por demasiados resultados 
 // valores de filtro ordenar_por: anio - rating_personal - fecha_visto
 // valores de ordenamiento orden: asc - desc
 app.get('/', (req, res) => {
     res.json({
     titulo: "🎬 Herbert Flix 🎬",
     busqueda_de_peliculas: {
-        buscar_pelis_texto: 'GET /api/busqueda/?q=<texto>',
+        buscar_pelis_texto: 'GET /api/busqueda/?q=<texto > 2 char>',
         ver_detalles_de_pelicula: 'GET /api/pelicula/:imdb_id'},
     visualizaciones_de_peliculas: { 
         ver_todas_las_pelis: 'GET /api/mis-pelis/vistas',
