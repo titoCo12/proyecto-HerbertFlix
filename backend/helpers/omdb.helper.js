@@ -3,7 +3,7 @@ const OMDB_API_KEY = 'e29a1fcc'
 const OMDB_URL = 'http://www.omdbapi.com/';
 
 
-//resultado de peliculas listadas
+//resultado de pelis listadas
 async function buscarPeliculasOMDB(texto) {
     try {
         console.log("Realizando busqueda..")
@@ -39,7 +39,7 @@ async function buscarPeliculasOMDB(texto) {
 }
 
 
-//informacion mas detallada al elegir pelicula listada
+//informacion mas detallada al elegir peli listada
 async function obtenerDetallesPelicula(imdb_id) {
     try {
         console.log(`abriendo peli seleccionada ${imdb_id}`);
@@ -58,16 +58,16 @@ async function obtenerDetallesPelicula(imdb_id) {
             return {
                 imdb_id: resultado.imdbID,
                 titulo: resultado.Title,
-                anio: resultado.Year || 0,
+                anio: resultado.Year || "",
                 duracion_minutos: parseInt(resultado.Runtime) || 0,
-                director: resultado.Director,
-                generos: resultado.Genre,
+                director: resultado.Director || "",
+                generos: resultado.Genre || "",
                 rating_imdb: parseFloat(resultado.imdbRating) || 0,
-                sinopsis: resultado.Plot,
+                sinopsis: resultado.Plot || "",
                 poster: resultado.Poster !== "N/A" ? resultado.Poster : null,
-                actores: resultado.Actors,
-                pais: resultado.Country,
-                idioma: resultado.Language
+                actores: resultado.Actors || "",
+                pais: resultado.Country || "",
+                idioma: resultado.Language || ""
             };
         } else {
             console.log('Pelicula no encontrada en OMDb');

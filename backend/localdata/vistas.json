@@ -6,15 +6,12 @@
     "anio": "1985",
     "duracion_minutos": 86,
     "director": "Stuart Gordon",
-    "generos": [
-      "Comedia",
-      "Horror",
-      "Sci-Fi"
-    ],
+    "generos": "Comedia, Horror, Sci-Fi",
     "rating_imdb": 7.1,
     "rating_personal": 9.5,
     "resenia": "Gran personaje Herbert West",
-    "fecha_visto": "2024-06-15"
+    "fecha_visto": "2024-06-15",
+    "poster": "https://m.media-amazon.com/images/M/MV5BZGZhYzk5MDEtOTc2Yi00ZTAyLWI1MjctZDYzYzhmNzgyZThlXkEyXkFqcGc@._V1_SX300.jpg"
   },
   {
     "id": 1765072317707,
@@ -23,17 +20,12 @@
     "anio": "2016",
     "duracion_minutos": 128,
     "director": "Damien Chazelle",
-    "generos": [
-      "Comedia",
-      "Drama",
-      "Música",
-      "Musical",
-      "Romance"
-    ],
+    "generos":"Comedia, Drama, Música, Musical, Romance",
     "rating_imdb": 8,
     "rating_personal": 8.5,
     "resenia": "Muy linda pelicula",
-    "fecha_visto": "2023-10-12"
+    "fecha_visto": "2023-10-12",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMzUzNDM2NzM2MV5BMl5BanBnXkFtZTgwNTM3NTg4OTE@._V1_SX300.jpg"
   },
   {
     "id": 1765072317708,
@@ -42,14 +34,12 @@
     "anio": "1985",
     "duracion_minutos": 101,
     "director": "George A. Romero",
-    "generos": [
-      "Horror",
-      "Thriller"
-    ],
+    "generos": "Horror, Thriller",
     "rating_imdb": 7.1,
     "rating_personal": 10,
     "resenia": "La mejor pelicula de zombies",
-    "fecha_visto": "2023-09-12"
+    "fecha_visto": "2023-09-12",
+    "poster": "https://m.media-amazon.com/images/M/MV5BOTg0ZTVmMDMtMTkxZC00MDY1LTliZTUtNjg5NTAzNjAxY2Y0XkEyXkFqcGc@._V1_SX300.jpg"
   },
   {
     "id": 1765072317709,
@@ -58,14 +48,11 @@
     "anio": "1995",
     "duracion_minutos": 170,
     "director": "Michael Mann",
-    "generos": [
-      "Acción",
-      "Crimen",
-      "Drama"
-    ],
+    "generos": "Acción, Crimen, Drama",
     "rating_imdb": 8.3,
     "rating_personal": 8.5,
     "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre",
-    "fecha_visto": "2025-11-25"
+    "fecha_visto": "2025-11-25",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTkxYjU1OTMtYWViZC00ZjAzLWI3MDktZGQ2N2VmMjVjNDRlXkEyXkFqcGc@._V1_SX300.jpg"
   }
 ]

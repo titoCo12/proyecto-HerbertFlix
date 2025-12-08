@@ -69,14 +69,15 @@ router.post('/vistas', (req,res) => {
         }
         
         const nuevaVisualizacion = {
-            id: Date.now(),            //timestamp para los id para evitar repetidos
+            id: Date.now(),        //timestamp para los id para evitar repetidos
             imdb_id: datos.imdb_id,
             titulo: datos.titulo,
             anio: datos.anio,
-            duracion_minutos: datos.duracion_minutos,
+            duracion_minutos: datos.duracion_minutos || 0,  //si omdb no me da duracion el parseInt devuelve NaN
             director: datos.director,
             generos: datos.generos,
             rating_imdb: datos.rating_imdb,
+            poster: datos.poster,
             rating_personal: datos.rating_personal !== undefined ? datos.rating_personal : null,
             resenia: datos.resenia || "",
             fecha_visto: new Date().toISOString().split('T')[0]

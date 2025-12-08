@@ -69,7 +69,7 @@ function ordenarPelis(orden, ordenar_por, pelis) {
     return [...pelis].sort((a, b) => {
             switch(ordenar_por) {
                 case 'anio':
-                    return (a.anio - b.anio) * ordenDir;
+                    return (parseInt(a.anio) - parseInt(b.anio)) * ordenDir;
 
                 case 'rating_personal':
                     // falta de rating personal (null) siempre va al fondo 

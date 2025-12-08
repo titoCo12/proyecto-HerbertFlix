@@ -5,12 +5,9 @@
     "anio": "1985",
     "duracion_minutos": 86,
     "director": "Stuart Gordon",
-    "generos": [
-      "Comedia",
-      "Horror",
-      "Sci-Fi"
-    ],
-    "rating_imdb": 7.1
+    "generos": "Comedia, Horror, Sci-Fi",
+    "rating_imdb": 7.1,
+    "poster": "https://m.media-amazon.com/images/M/MV5BZGZhYzk5MDEtOTc2Yi00ZTAyLWI1MjctZDYzYzhmNzgyZThlXkEyXkFqcGc@._V1_SX300.jpg"
   },
   {
     "imdb_id": "tt31193180",
@@ -18,17 +15,8 @@
     "anio": "2025",
     "duracion_minutos": 137,
     "director": "Ryan Coogler",
-    "generos": [
-      "Folk Horror",
-      "Period Drama",
-      "Supernatural Horror",
-      "Vampire Horror",
-      "Action",
-      "Drama",
-      "Horror",
-      "Music",
-      "Thriller"
-    ],
-    "rating_imdb": 7.6
+    "generos": "Folk Horror, Period Drama, Supernatural Horror, Vampire Horror, Action, Drama, Horror, Music, Thriller",
+    "rating_imdb": 7.6,
+    "poster": "https://m.media-amazon.com/images/M/MV5BNjIwZWY4ZDEtMmIxZS00NDA4LTg4ZGMtMzUwZTYyNzgxMzk5XkEyXkFqcGc@._V1_SX300.jpg"
   }
 ]

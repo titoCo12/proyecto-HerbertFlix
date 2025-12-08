@@ -52,7 +52,7 @@ router.post('/watchlist', (req, res) => {
             director: datos.director,
             generos: datos.generos,
             rating_imdb: datos.rating_imdb,
-            fecha_agregado: new Date().toISOString().split('T')[0]
+            poster: datos.poster
         };
         
         agregarRegistro(nuevaPeliWatchlist, 'watchlist');
