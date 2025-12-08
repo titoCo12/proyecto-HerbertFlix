@@ -4,7 +4,7 @@ const OMDB_URL = 'http://www.omdbapi.com/';
 
 
 //resultado de pelis listadas
-async function buscarPeliculasOMDB(texto) {
+async function buscarPelisOMDB(texto) {
     try {
         console.log("Realizando busqueda..")
 
@@ -40,7 +40,7 @@ async function buscarPeliculasOMDB(texto) {
 
 
 //informacion mas detallada al elegir peli listada
-async function obtenerDetallesPelicula(imdb_id) {
+async function obtenerDetallesPeli(imdb_id) {
     try {
         console.log(`abriendo peli seleccionada ${imdb_id}`);
         
@@ -81,6 +81,6 @@ async function obtenerDetallesPelicula(imdb_id) {
 }
 
 module.exports = {
-    buscarPeliculasOMDB,
-    obtenerDetallesPelicula
+    buscarPelisOMDB,
+    obtenerDetallesPeli
 };

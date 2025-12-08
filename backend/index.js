@@ -6,12 +6,14 @@ const PORT = 3000;
 // Importar rutas
 const vistasRoutes = require('./routes/vistas.routes');
 const watchlistRoutes = require('./routes/watchlist.routes');
+const busquedaOMDBRoutes = require('./routes/busquedaOMBD.routes');
 
 // middleware
 app.use(express.json());
-// rutas para endpoints de vistas y watchlist
+// rutas para endpoints de vistas, watchlist y busqueda con OMDB
 app.use('/api/mis-pelis', vistasRoutes);
 app.use('/api/mis-pelis', watchlistRoutes);
+app.use('/api', busquedaOMDBRoutes);
 
 
 
@@ -21,18 +23,20 @@ app.use('/api/mis-pelis', watchlistRoutes);
 app.get('/', (req, res) => {
     res.json({
     titulo: "🎬 Herbert Flix 🎬",
-    endpoints_de_visualizaciones: { 
+    busqueda_de_peliculas: {
+        buscar_pelis_texto: 'GET /api/busqueda/?q=<texto>',
+        ver_detalles_de_pelicula: 'GET /api/pelicula/:imdb_id'},
+    visualizaciones_de_peliculas: { 
         ver_todas_las_pelis: 'GET /api/mis-pelis/vistas',
         buscar_por_texto_orden: 'GET /api/mis-pelis/vistas?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>',
         buscar_peli_por_id: 'GET /api/mis-pelis/vistas/:id',
         agregar_peli: 'POST /api/mis-pelis/vistas',
         eliminar_visualizaciones_peli: 'DELETE /api/mis-pelis/des-ver/:imdb_id'},
-    endpoints_de_watchlist: {
+    watchlist: {
         ver_watchlist: 'GET /api/mis-pelis/watchlist',
         buscar_por_texto: 'GET /api/mis-pelis/watchlist?q=<texto>',
         agregar_a_watchlist: 'POST /api/mis-pelis/watchlist',
-        eliminar_de_watchlist: 'DELETE /api/mis-pelis/watchlist/:imdb_id'
-    }
+        eliminar_de_watchlist: 'DELETE /api/mis-pelis/watchlist/:imdb_id'}
     });
 });
 

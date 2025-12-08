@@ -4,8 +4,7 @@ const {
     leerPelis, 
     guardarDatos, 
     agregarRegistro, 
-    busquedaDePelis 
-} = require('../helpers/pelis.helpers');
+    busquedaDePelis } = require('../helpers/pelis.helpers');
 
 
 //Endpoint buscar pelis en watchlist
