@@ -1,39 +1,13 @@
-const API_BASE = 'http://localhost:3000';
-
-// RENDER ------------------------------
-
-function obtenerPosterSeguro(poster) {
-    if (!poster || poster === 'N/A' || poster.includes('http://')) {
-        return 'https://via.placeholder.com/50x75?text=No+Poster';
-    }
-    return poster;
-}
-
-function mostrarSpinner(columna) {
-    columna.innerHTML = `<div class="text-center p-5"><div class="spinner-border"></div></div>`;
-}
-
-function renderizarLista(columna, titulo, cantidad, itemsHtml) {
-    columna.innerHTML = `
-        <div class="p-3 border-bottom">
-            <h4>${titulo} <small class="text-muted">(${cantidad})</small></h4>
-        </div>
-        <div style="max-height: calc(100vh - 120px); overflow-y: auto;">
-            ${itemsHtml}
-        </div>
-    `;
-}
-
-// HANDLERS ----------------------------
+import { fetchWatchlist, fetchLogs, fetchBusqueda } from './api.js';
+import { mostrarSpinner, renderizarLista, obtenerPosterSeguro } from './render.js';
 
 //Al tocar Watchlist
-async function cargarWatchlist() {
+export async function cargarWatchlist() {
     const columna = document.getElementById('columna-izquierda');
     mostrarSpinner(columna);
 
     try {
-        const r = await fetch(`${API_BASE}/api/mis-pelis/watchlist`, { cache: "no-store" });
-        const { watchlist = [] } = await r.json();
+        const {watchlist = []} = await fetchWatchlist();
 
         if (watchlist.length === 0) {
             columna.innerHTML = `<div class="p-4 text-center"><h5>Watchlist vacía</h5></div>`;
@@ -63,13 +37,12 @@ async function cargarWatchlist() {
 }
 
 //Al tocar Logs
-async function cargarLogs() {
+export async function cargarLogs() {
     const columna = document.getElementById('columna-izquierda');
     mostrarSpinner(columna);
 
     try {
-        const r = await fetch(`${API_BASE}/api/mis-pelis/vistas`, { cache: "no-store" });
-        const { resultados = 0, visualizaciones = [] } = await r.json();
+        const {resultados = 0, visualizaciones = []} = await fetchLogs();
 
         if (resultados === 0) {
             columna.innerHTML = `<div class="p-4 text-center"><h5>No hay logs</h5></div>`;
@@ -109,7 +82,7 @@ async function cargarLogs() {
 
 
 //Al buscar por OMDB
-async function buscarOMDB(texto) {
+export async function buscarOMDB(texto) {
     const columna = document.getElementById('columna-izquierda');
     
     if (!texto) {
@@ -120,8 +93,7 @@ async function buscarOMDB(texto) {
     mostrarSpinner(columna);
     
     try {
-        const r = await fetch(`${API_BASE}/api/busqueda?q=${encodeURIComponent(texto)}`);
-        const data = await r.json();
+        const data = await fetchBusqueda(texto);
         const peliculas = data.resultados || [];
         
         if (peliculas.length === 0) {
@@ -151,7 +123,3 @@ async function buscarOMDB(texto) {
     }
 }
 
-function seleccionarPelicula(pelicula) {
-    console.log('Seleccionada:', pelicula);
-    // Para la columna derecha después
-}

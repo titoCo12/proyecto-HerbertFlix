@@ -21,8 +21,10 @@
 
             <div class="search-box">
             <input type="text" class="form-control text-success" placeholder="Write here" 
-                onkeypress="if(event.key === 'Enter') this.nextElementSibling.click()">
-            <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+                onkeypress="if(event.key === 'Enter') buscarOMDB(this.value)">
+            <button class="btn" type="submit" onclick="buscarOMDB(this.previousElementSibling.value)">
+                <i class="bi bi-search"></i>
+            </button>
             </div>
         </div>
 
