@@ -94,7 +94,13 @@
 
 #columna-izquierda .pelicula-item:hover {
     background-color: rgba(0,0,0,0.05);
-    border-left-color: #007bff;
+}
+
+.peli-listada:hover {
+    background-color: #b7b7b9;
+}
+.peli-listada:active {
+    background-color: #abb5ab;
 }
 
 .contenido {

@@ -17,11 +17,12 @@
     <header class="header">
         <div class="header-left">
             <button class="btn" id="watch_btn" onclick="cargarWatchlist()">Watchlist</button>
-            <button class="btn" id="logs_btn">Logs</button>
+            <button class="btn" id="logs_btn" onclick="cargarLogs()">Logs</button>
 
             <div class="search-box">
-            <input type="text" class="form-control text-success" placeholder="Write here">
-            <button class="btn"><i class="bi bi-search"></i></button>
+            <input type="text" class="form-control text-success" placeholder="Write here" 
+                onkeypress="if(event.key === 'Enter') this.nextElementSibling.click()">
+            <button class="btn" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </div>
 
