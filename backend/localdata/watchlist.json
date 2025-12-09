@@ -18,5 +18,65 @@
     "generos": "Folk Horror, Period Drama, Supernatural Horror, Vampire Horror, Action, Drama, Horror, Music, Thriller",
     "rating_imdb": 7.6,
     "poster": "https://m.media-amazon.com/images/M/MV5BNjIwZWY4ZDEtMmIxZS00NDA4LTg4ZGMtMzUwZTYyNzgxMzk5XkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0477348",
+    "titulo": "No Country for Old Men",
+    "anio": "2007",
+    "duracion_minutos": 122,
+    "director": "Ethan Coen, Joel Coen",
+    "generos": "Crime, Drama, Thriller",
+    "rating_imdb": 8.2,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjA5Njk3MjM4OV5BMl5BanBnXkFtZTcwMTc5MTE1MQ@@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0097202",
+    "titulo": "The Killer",
+    "anio": "1989",
+    "duracion_minutos": 111,
+    "director": "John Woo",
+    "generos": "Action, Crime, Drama",
+    "rating_imdb": 7.7,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjQyZDJhNTktYjZiZC00ODU4LTg5OTYtYjc2MzA2OGFjMzZmXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt2043757",
+    "titulo": "2-Headed Shark Attack",
+    "anio": "2012",
+    "duracion_minutos": 88,
+    "director": "Christopher Ray",
+    "generos": "Action, Adventure, Comedy, Horror, Sci-Fi, Thriller",
+    "rating_imdb": 2.5,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTM3NjUyOTM3Ml5BMl5BanBnXkFtZTcwMjQyNTA5Ng@@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0142236",
+    "titulo": "Dragon Ball Z: Fusion Reborn",
+    "anio": "1995",
+    "duracion_minutos": 51,
+    "director": "Shigeyasu Yamauchi",
+    "generos": "Animation, Action, Sci-Fi",
+    "rating_imdb": 7.6,
+    "poster": "https://m.media-amazon.com/images/M/MV5BNjIyNGY0OWYtY2JlNS00ODVjLWJiODEtYWNlNWZjNDMzZjUzXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt1877830",
+    "titulo": "The Batman",
+    "anio": "2022",
+    "duracion_minutos": 176,
+    "director": "Matt Reeves",
+    "generos": "Action, Crime, Drama",
+    "rating_imdb": 7.8,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMmU5NGJlMzAtMGNmOC00YjJjLTgyMzUtNjAyYmE4Njg5YWMyXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0092991",
+    "titulo": "Evil Dead II",
+    "anio": "1987",
+    "duracion_minutos": 84,
+    "director": "Sam Raimi",
+    "generos": "Comedy, Horror",
+    "rating_imdb": 7.7,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMGMxMWVhMzAtYWRlOS00YzY1LTlkYTQtYjU5ZDM4MGI1YWFjXkEyXkFqcGc@._V1_SX300.jpg"
   }
 ]

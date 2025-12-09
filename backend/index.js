@@ -26,7 +26,7 @@ app.use('/api', busquedaOMDBRoutes);
 
 //Endpoint base
 // busqueda con 1 o 2 letras suele devolver vacio por demasiados resultados 
-// valores de filtro ordenar_por: anio - rating_personal - fecha_visto
+// valores de filtro ordenar_por: titulo - anio - rating_personal - fecha_visto
 // valores de ordenamiento orden: asc - desc
 app.get('/', (req, res) => {
     res.json({

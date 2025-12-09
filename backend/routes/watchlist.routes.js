@@ -11,7 +11,8 @@ const {
 router.get('/watchlist', (req, res) => {
     try {
         const {q:texto} = req.query;
-        const pelis = busquedaDePelis(leerPelis('watchlist'), texto, null, null);
+        //la watchlist se carga en el front en orden alfabetico
+        const pelis = busquedaDePelis(leerPelis('watchlist'), texto, 'titulo', null);
         
         res.json({
             mensaje: 'Watchlist',

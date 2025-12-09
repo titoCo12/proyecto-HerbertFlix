@@ -68,6 +68,11 @@ function ordenarPelis(orden, ordenar_por, pelis) {
     //ordeno copia para no ordenar original
     return [...pelis].sort((a, b) => {
             switch(ordenar_por) {
+                case 'titulo':
+                    const tituloA = (a.titulo || '').toLowerCase();
+                    const tituloB = (b.titulo || '').toLowerCase();
+                    return tituloA.localeCompare(tituloB) * ordenDir;
+                    
                 case 'anio':
                     return (parseInt(a.anio) - parseInt(b.anio)) * ordenDir;
 
