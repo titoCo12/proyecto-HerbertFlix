@@ -11,7 +11,7 @@ function normalizarTexto(t) {
 }
 
 //resultado de pelis listadas
-async function buscarPelisOMDB(texto) {
+async function buscarPelisOMDB(texto, pag = 1) {
     try {
         console.log("Realizando busqueda..")
 
@@ -20,19 +20,23 @@ async function buscarPelisOMDB(texto) {
                 apikey: OMDB_API_KEY,     
                 s: texto,
                 type: 'movie',
-                page: 1
+                page: pag
             }
         });
 
         if (pedido.data.Response === 'True') {
             const resultados = pedido.data.Search;
             
-            return resultados.map(p => ({
-                imdb_id: p.imdbID,
-                titulo: p.Title,
-                anio: p.Year,
-                poster: p.Poster
-            }));
+            return {
+                resultados: resultados.map(p => ({
+                    imdb_id: p.imdbID,
+                    titulo: p.Title,
+                    anio: p.Year,
+                    poster: p.Poster
+                })),
+                cantResultados: pedido.data.totalResults
+            };
+
         }
         else {
             console.log("Sin resultados");
@@ -71,7 +75,7 @@ async function obtenerDetallesPeli(imdb_id) {
                 generos: normalizarTexto(resultado.Genre),
                 rating_imdb: parseFloat(resultado.imdbRating) || 0,
                 sinopsis: normalizarTexto(resultado.Plot),
-                poster: resultado.Poster !== "N/A" ? resultado.Poster : null,
+                poster: resultado.Poster !== "N/A" ? resultado.Poster : "N/A",
                 actores: normalizarTexto(resultado.Actors),
                 pais: normalizarTexto(resultado.Country),
                 idioma: normalizarTexto(resultado.Language)

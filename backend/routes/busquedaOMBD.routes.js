@@ -6,7 +6,7 @@ const {buscarPelisOMDB, obtenerDetallesPeli} = require('../helpers/omdb.helper')
 //busqueda de peliculas atraves de la api OMDB
 router.get('/busqueda', async (req, res) => {
     try {
-        const {q:texto} = req.query;
+        const { q: texto, page = 1 } = req.query;
         const txt = texto.trim();
 
         if (txt.trim() === '') {
@@ -15,11 +15,13 @@ router.get('/busqueda', async (req, res) => {
             });
         }
         
-        const resultados = await buscarPelisOMDB(txt);
+        const resultados = await buscarPelisOMDB(txt, page);
         
         res.json({
             mensaje: `Resultados de '${txt}'`,
-            resultados: resultados
+            resultados: resultados.resultados,
+            cantPaginas: Math.ceil(resultados.cantResultados / 10),
+            total: resultados.cantResultados
         });
         
     } catch (error) {

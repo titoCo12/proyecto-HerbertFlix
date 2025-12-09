@@ -3,8 +3,13 @@ const API_BASE = 'http://localhost:3000';
 // RENDER ------------------------------
 
 function obtenerPosterSeguro(poster) {
-    if (!poster || poster === 'N/A' || poster.includes('http://')) {
+    if (!poster || 
+        poster === 'N/A' || poster === null) {
         return 'https://via.placeholder.com/50x75?text=No+Poster';
+    }
+    // roxy para bloqueo de Amazon
+    if (poster.includes('amazon.com') || poster.includes('amazonaws.com')) {
+        return `https://images.weserv.nl/?url=${encodeURIComponent(poster)}&w=300`;
     }
     return poster;
 }
@@ -197,7 +202,7 @@ async function cargarLogs() {
 
 
 //Al buscar por OMDB
-async function buscarOMDB(texto) {
+async function buscarOMDB(texto, pag = 1) {   //primer pagina por default
     const columna = document.getElementById('columna-izquierda');
     
     if (texto.length <= 2) {
@@ -207,11 +212,12 @@ async function buscarOMDB(texto) {
     
     mostrarSpinner(columna);
     
+    //elementos de pag actual
     try {
-        const r = await fetch(`${API_BASE}/api/busqueda?q=${encodeURIComponent(texto)}`);
+        const r = await fetch(`${API_BASE}/api/busqueda?q=${encodeURIComponent(texto)}&page=${pag}`);
         const data = await r.json();
         const peliculas = data.resultados || [];
-        
+        const cantPaginas = data.cantPaginas;
 
         if (peliculas.length === 0) {
             columna.innerHTML = `<div class="p-4 text-center"><h5>No titles found :(</h5></div>`;
@@ -231,8 +237,31 @@ async function buscarOMDB(texto) {
                 </div>
             </div>
         `).join('');
-        
-        renderizarLista(columna, `Results for "${texto}"`, peliculas.length, pelis);
+
+        // botones de paginacion abajo
+        const paginacion = `
+            <div class="p-3 border-top d-flex justify-content-center align-items-center">
+                ${pag > 1 ? `
+                    <button class="btn btn-outline-primary btn-sm me-2" 
+                            onclick="buscarOMDB('${texto}', ${pag - 1})">
+                        <i class="bi bi-chevron-left"></i> Previous
+                    </button>
+                ` : ''}
+                
+                <span class="mx-2 text-muted">Page ${pag}</span>
+                
+                ${cantPaginas > pag ? `
+                    <button class="btn btn-outline-primary btn-sm ms-2" 
+                            onclick="buscarOMDB('${texto}', ${pag + 1})">
+                        Next <i class="bi bi-chevron-right"></i>
+                    </button>
+                ` : ''}
+            </div>
+        `;
+
+        console.log('Total páginas:', cantPaginas, 'Página actual:', pag);
+        renderizarLista(columna, `Results for "${texto}"`, data.total, pelis + paginacion);
+
         
     } catch (e) {
         columna.innerHTML = `<div class="alert alert-danger m-3">Error: ${e.message}</div>`;
