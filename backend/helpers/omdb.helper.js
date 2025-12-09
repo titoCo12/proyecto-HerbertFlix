@@ -28,7 +28,7 @@ async function buscarPelisOMDB(texto) {
             const resultados = pedido.data.Search;
             
             return resultados.map(p => ({
-                imbd_id: p.imdbID,
+                imdb_id: p.imdbID,
                 titulo: p.Title,
                 anio: p.Year,
                 poster: p.Poster
