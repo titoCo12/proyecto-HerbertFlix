@@ -7,6 +7,30 @@ const {
     busquedaDePelis } = require('../helpers/pelis.helpers');
 
 
+router.get('/watchlist/:imdb_id', (req, res) => {
+    try {
+        const imdb_id = req.params.imdb_id;
+        const peli = leerPelis('watchlist').find(p => p.imdb_id===imdb_id);
+        
+        if(!peli) {
+            res.json ({
+                existe: false,
+                peli: null
+            })
+        }
+        else {
+            res.json ({
+                existe: true,
+                peli: peli
+            })
+        }
+
+    } catch (error) {
+        console.error('Error en GET /api/mis-pelis/watchlist/:imdb_id', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 //Endpoint buscar pelis en watchlist
 router.get('/watchlist', (req, res) => {
     try {

@@ -100,6 +100,36 @@ router.post('/vistas', (req,res) => {
 });
 
 
+//Endpoint eliminar una visualizacion
+router.delete('/vistas/:id', (req,res) => {
+    try {
+        const id = req.params.id;
+
+        let pelis = leerPelis('vistas');
+        const total = pelis.length;
+
+        const pelisFinal = pelis.filter(p => p.id !== id);
+
+        // si no se elimino nada no reescribo el json
+        if (pelisFinal.length == total) {
+            return res.status(404).json({ 
+                mensaje: 'no se encontro la visualizacion a eliminar',
+                id: id
+            });
+        }
+
+        guardarDatos(pelisFinal, 'vistas');
+
+        res.json({
+            estado: `se elimino el registro ${id}`,
+        });
+
+    } catch (error) {
+        console.error('Error en DELETE /api/mis-pelis/vistas/:id:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 //Endpoint eliminar visualizaciones de una pelicula
 router.delete('/des-ver/:imdb_id', (req, res) => {
     try {

@@ -40,16 +40,6 @@
     "poster": "https://m.media-amazon.com/images/M/MV5BMjQyZDJhNTktYjZiZC00ODU4LTg5OTYtYjc2MzA2OGFjMzZmXkEyXkFqcGc@._V1_SX300.jpg"
   },
   {
-    "imdb_id": "tt2043757",
-    "titulo": "2-Headed Shark Attack",
-    "anio": "2012",
-    "duracion_minutos": 88,
-    "director": "Christopher Ray",
-    "generos": "Action, Adventure, Comedy, Horror, Sci-Fi, Thriller",
-    "rating_imdb": 2.5,
-    "poster": "https://m.media-amazon.com/images/M/MV5BMTM3NjUyOTM3Ml5BMl5BanBnXkFtZTcwMjQyNTA5Ng@@._V1_SX300.jpg"
-  },
-  {
     "imdb_id": "tt0142236",
     "titulo": "Dragon Ball Z: Fusion Reborn",
     "anio": "1995",
@@ -78,5 +68,35 @@
     "generos": "Comedy, Horror",
     "rating_imdb": 7.7,
     "poster": "https://m.media-amazon.com/images/M/MV5BMGMxMWVhMzAtYWRlOS00YzY1LTlkYTQtYjU5ZDM4MGI1YWFjXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0104257",
+    "titulo": "A Few Good Men",
+    "anio": "1992",
+    "duracion_minutos": 138,
+    "director": "Rob Reiner",
+    "generos": "Drama, Thriller",
+    "rating_imdb": 7.7,
+    "poster": "https://m.media-amazon.com/images/M/MV5BOGVhMTUwYzEtZGQ1ZC00Nzg1LTk0OGUtMDk0NDM0ZmZlN2E0XkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt5173032",
+    "titulo": "Buster's Mal Heart",
+    "anio": "2016",
+    "duracion_minutos": 96,
+    "director": "Sarah Adina Smith",
+    "generos": "Crime, Drama, Mystery",
+    "rating_imdb": 6.1,
+    "poster": "https://m.media-amazon.com/images/M/MV5BOTJjMDQ0ZTEtYjkzMC00MWRhLTllZDktMWNjYTY4N2NlZWNlXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0472995",
+    "titulo": "Audioslave: Live in Cuba",
+    "anio": "2005",
+    "duracion_minutos": 107,
+    "director": "Lawrence Jordan",
+    "generos": "Documentary, Music",
+    "rating_imdb": 8,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTQwNTE2MTE5OF5BMl5BanBnXkFtZTcwNjY0NDIzMQ@@._V1_SX300.jpg"
   }
 ]

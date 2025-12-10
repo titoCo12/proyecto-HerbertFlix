@@ -39,10 +39,12 @@ app.get('/', (req, res) => {
         buscar_por_texto_orden: 'GET /api/mis-pelis/vistas?q=<texto>&ordenar_por=<valor>&orden=<asc-desc>',
         buscar_peli_por_id: 'GET /api/mis-pelis/vistas/:id',
         agregar_peli: 'POST /api/mis-pelis/vistas',
+        eliminar_una_visualizacion: 'DELETE /api/mis-pelis/:id',
         eliminar_visualizaciones_peli: 'DELETE /api/mis-pelis/des-ver/:imdb_id'},
     watchlist: {
         ver_watchlist: 'GET /api/mis-pelis/watchlist',
         buscar_por_texto: 'GET /api/mis-pelis/watchlist?q=<texto>',
+        buscar_por_id: 'GET /api/mis-pelis/watchlist/:imdb_id',
         agregar_a_watchlist: 'POST /api/mis-pelis/watchlist',
         eliminar_de_watchlist: 'DELETE /api/mis-pelis/watchlist/:imdb_id'}
     });

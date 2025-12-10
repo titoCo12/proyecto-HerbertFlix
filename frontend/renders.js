@@ -1,13 +1,16 @@
 // renders.js
 const API_BASE = 'http://localhost:3000';
 
+
 export async function verificarWatchlist(imdb_id) {
     try {
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/watchlist`);
-        const { watchlist = [] } = await respuesta.json();
-        return watchlist.some(peli => peli.imdb_id === imdb_id);
+        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/watchlist/${imdb_id}`);
+        const data = await respuesta.json();
+        
+        return data.existe && data.peli !== null;
+        
     } catch (error) {
-        console.error('Error checking watchlist:', error);
+        console.error('Error:', error);
         return false;
     }
 }
@@ -46,10 +49,16 @@ export async function renderizarDetalles(pelicula) {
     const estaEnWatchlist = await verificarWatchlist(pelicula.imdb_id);
     
     const botonWatchlist = estaEnWatchlist
-        ? `<button class="btn btn-danger" onclick="removerDeWatchlist('${pelicula.imdb_id}')">
+        ? `<button class="btn btn-danger" 
+            style="color: #dc3545 !important; border-color: #dc3545 !important; 
+            background-color: white !important;"
+            onclick="removerDeWatchlist('${pelicula.imdb_id}')">
               <i class="bi bi-x-circle"></i> Remove from Watchlist
            </button>`
-        : `<button class="btn btn-success" onclick="agregarAWatchlist('${pelicula.imdb_id}')">
+        : `<button class="btn btn-success" 
+             style="color: #0a748aff !important; border-color: #0d89a2ff !important; 
+             background-color: white !important;"
+            onclick="agregarAWatchlist('${pelicula.imdb_id}')">
               <i class="bi bi-plus-circle"></i> Add to Watchlist
            </button>`;
 
@@ -119,7 +128,10 @@ export async function renderizarDetalles(pelicula) {
             
             <div class="mt-4 d-grid gap-2">
                 ${botonWatchlist}
-                <button class="btn btn-primary" onclick="loggearPelicula('${pelicula.imdb_id}')">
+                <button class="btn btn-outline-primary"  
+                style="color: #0a748aff !important; border-color: #0d89a2ff !important; 
+                background-color: white !important;"
+                onclick="loggearPelicula('${pelicula.imdb_id}')">
                     <i class="bi bi-eye"></i> Log a Review
                 </button>
             </div>
