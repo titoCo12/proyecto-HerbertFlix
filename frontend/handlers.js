@@ -413,3 +413,46 @@ window.enviarLog = async function(imdb_id) {
         alert('Network error');
     }
 };
+
+
+export async function eliminarLog(id) {
+    if (!confirm('Are you sure you want to delete this log?')) return;
+    
+    console.log('Intentando eliminar log con ID:', id);
+    console.log('Tipo de ID:', typeof id);
+    console.log('URL:', `${API_BASE}/api/mis-pelis/vistas/${id}`);
+
+    try {
+        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/vistas/${id}`, {
+            method: 'DELETE'
+        });
+        
+        if (respuesta.ok) {
+            const resultado = await respuesta.json();
+            
+            // refrescar logs
+            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
+                setTimeout(() => cargarLogs(), 300);
+            }
+            
+            // volver a estado inicial
+            const columnaDerecha = document.getElementById('columna-derecha');
+            columnaDerecha.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="text-muted mb-3">
+                        <h4>Select a movie to see details</h4>
+                        <i class="bi bi-film display-1"></i>
+                    </div>
+                </div>
+            `;
+            
+        } else {
+            const resultado = await respuesta.json();
+            alert(`Error: ${resultado.error || 'Failed to delete log'}`);
+        }
+        
+    } catch (error) {
+        console.error('Error deleting log:', error);
+        alert('Network error');
+    }
+}

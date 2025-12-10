@@ -101,31 +101,32 @@ router.post('/vistas', (req,res) => {
 
 
 //Endpoint eliminar una visualizacion
-router.delete('/vistas/:id', (req,res) => {
+router.delete('/vistas/:id', (req, res) => {
     try {
         const id = req.params.id;
-
-        let pelis = leerPelis('vistas');
-        const total = pelis.length;
-
-        const pelisFinal = pelis.filter(p => p.id !== id);
-
-        // si no se elimino nada no reescribo el json
-        if (pelisFinal.length == total) {
+        const idNum = Number(id);
+        
+        let visualizaciones = leerPelis('vistas');
+        const indice = visualizaciones.findIndex(p => p.id === idNum);
+        
+        if (indice === -1) {
             return res.status(404).json({ 
-                mensaje: 'no se encontro la visualizacion a eliminar',
-                id: id
+                error: 'Visualización no encontrada',
+                id_buscado: id
             });
         }
-
-        guardarDatos(pelisFinal, 'vistas');
-
+        
+        const eliminada = visualizaciones.splice(indice, 1)[0];
+        guardarDatos(visualizaciones, 'vistas');
+        
         res.json({
-            estado: `se elimino el registro ${id}`,
+            mensaje: `Visualización eliminada: "${eliminada.titulo}"`,
+            id_eliminado: id,
+            titulo: eliminada.titulo
         });
 
     } catch (error) {
-        console.error('Error en DELETE /api/mis-pelis/vistas/:id:', error.message);
+        console.error('Error en DELETE /vistas/:id:', error.message);
         res.status(500).json({ error: error.message });
     }
 });

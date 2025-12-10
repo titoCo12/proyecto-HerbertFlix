@@ -7,6 +7,7 @@ import {
     agregarAWatchlist, 
     removerDeWatchlist, 
     loggearPelicula,
+    eliminarLog
 } from './handlers.js';
 
 // Exportar funciones al scope global para HTML
@@ -17,5 +18,6 @@ window.seleccionarPelicula = seleccionarPelicula;
 window.agregarAWatchlist = agregarAWatchlist;
 window.removerDeWatchlist = removerDeWatchlist;
 window.loggearPelicula = loggearPelicula;
+window.eliminarLog = eliminarLog;
 
 console.log('app cargada');
