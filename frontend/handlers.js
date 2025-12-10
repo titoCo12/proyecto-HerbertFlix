@@ -1,14 +1,13 @@
+import { api } from './utils/api.js';
 import { mostrarSpinner, renderizarLista, obtenerPosterSeguro, renderizarDetalles } from './renders.js';
-
-const API_BASE = 'http://localhost:3000';
 
 export async function cargarWatchlist() {
     const columna = document.getElementById('columna-izquierda');
     mostrarSpinner(columna);
 
     try {
-        const r = await fetch(`${API_BASE}/api/mis-pelis/watchlist`, { cache: "no-store" });
-        const { watchlist = [] } = await r.json();
+        const data = await api.get('/api/mis-pelis/watchlist');
+        const { watchlist = [] } = data;
 
         if (watchlist.length === 0) {
             columna.innerHTML = `<div class="p-4 text-center"><h5>Your watchlist is empty, Good for you!</h5></div>`;
@@ -37,14 +36,13 @@ export async function cargarWatchlist() {
     }
 }
 
-
 export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusqueda = '') {
     const columna = document.getElementById('columna-izquierda');
     mostrarSpinner(columna);
 
     try {
         // armar URL con parámetros
-        let url = `${API_BASE}/api/mis-pelis/vistas`;
+        let url = '/api/mis-pelis/vistas';
         const params = new URLSearchParams();
         
         if (textoBusqueda.trim()) {
@@ -56,8 +54,8 @@ export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusq
         
         url += `?${params.toString()}`;
 
-        const r = await fetch(url, { cache: "no-store" });
-        const { resultados = 0, visualizaciones = [] } = await r.json();
+        const data = await api.get(url);
+        const { resultados = 0, visualizaciones = [] } = data;
 
         if (resultados === 0) {
             columna.innerHTML = `
@@ -138,13 +136,11 @@ export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusq
     }
 }
 
-
 window.cambiarOrdenLogs = function(ordenarPor) {
     const busquedaInput = document.getElementById('busquedaLogs');
     const textoBusqueda = busquedaInput ? busquedaInput.value : '';
     cargarLogs(ordenarPor, 'asc', textoBusqueda);
 };
-
 
 window.buscarEnLogs = function(texto) {
     clearTimeout(window.busquedaTimeout);
@@ -155,14 +151,12 @@ window.buscarEnLogs = function(texto) {
     }, 300);
 };
 
-
 window.alternarOrdenLogs = function(ordenarPor, ordenActual) {
     const nuevoOrden = ordenActual === 'asc' ? 'desc' : 'asc';
     const busquedaInput = document.getElementById('busquedaLogs');
     const textoBusqueda = busquedaInput ? busquedaInput.value : '';
     cargarLogs(ordenarPor, nuevoOrden, textoBusqueda);
 };
-
 
 export async function buscarOMDB(texto, pag = 1) {
     const columna = document.getElementById('columna-izquierda');
@@ -175,8 +169,7 @@ export async function buscarOMDB(texto, pag = 1) {
     mostrarSpinner(columna);
     
     try {
-        const r = await fetch(`${API_BASE}/api/busqueda?q=${encodeURIComponent(texto)}&page=${pag}`);
-        const data = await r.json();
+        const data = await api.get(`/api/busqueda?q=${encodeURIComponent(texto)}&page=${pag}`);
         const peliculas = data.resultados || [];
         const cantPaginas = data.cantPaginas;
 
@@ -255,8 +248,7 @@ export async function seleccionarPelicula(pelicula) {
             throw new Error('Movie does not have an ID');
         }
         
-        const respuesta = await fetch(`${API_BASE}/api/pelicula/${imdbID}`);
-        const resultado = await respuesta.json();
+        const resultado = await api.get(`/api/pelicula/${imdbID}`);
         const detalles = resultado.peli;
         
         renderizarDetalles(detalles);
@@ -273,40 +265,29 @@ export async function seleccionarPelicula(pelicula) {
 
 export async function agregarAWatchlist(imdb_id) {
     try {
-        const respuestaDetalles = await fetch(`${API_BASE}/api/pelicula/${imdb_id}`);
-        const resultadoDetalles = await respuestaDetalles.json();
+        const resultadoDetalles = await api.get(`/api/pelicula/${imdb_id}`);
         const pelicula = resultadoDetalles.peli;
 
         if (!pelicula) throw new Error("Couldn't access movie details");
 
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/watchlist`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                imdb_id: pelicula.imdb_id,
-                titulo: pelicula.titulo,
-                anio: pelicula.anio,
-                duracion_minutos: pelicula.duracion_minutos,
-                director: pelicula.director,
-                generos: pelicula.generos,
-                rating_imdb: pelicula.rating_imdb,
-                poster: pelicula.poster
-            })
+        const resultado = await api.post('/api/mis-pelis/watchlist', {
+            imdb_id: pelicula.imdb_id,
+            titulo: pelicula.titulo,
+            anio: pelicula.anio,
+            duracion_minutos: pelicula.duracion_minutos,
+            director: pelicula.director,
+            generos: pelicula.generos,
+            rating_imdb: pelicula.rating_imdb,
+            poster: pelicula.poster
         });
         
-        const resultado = await respuesta.json();
-        
-        if (respuesta.ok) {
-            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Watchlist')) {
-                cargarWatchlist();
-            }
-        } else {
-            alert(`Error: ${resultado.error || 'Failed to add'}`);
+        if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Watchlist')) {
+            cargarWatchlist();
         }
         
     } catch (error) {
         console.error('Error adding to watchlist:', error);
-        alert('Network error');
+        alert(`Error: ${error.message}`);
     }
 }
 
@@ -314,32 +295,22 @@ export async function removerDeWatchlist(imdb_id) {
     if (!confirm('Remove from watchlist?')) return;
     
     try {
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/watchlist/${imdb_id}`, {
-            method: 'DELETE'
-        });
+        await api.delete(`/api/mis-pelis/watchlist/${imdb_id}`);
         
-        if (respuesta.ok) {
-            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Watchlist')) {
-                cargarWatchlist();
-            }
-        } else {
-            const resultado = await respuesta.json();
-            alert(`Error: ${resultado.error || 'Failed to remove'}`);
+        if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Watchlist')) {
+            cargarWatchlist();
         }
         
     } catch (error) {
         console.error('Error removing from watchlist:', error);
-        alert('Network error');
+        alert(`Error: ${error.message}`);
     }
 }
-
 
 export function loggearPelicula(imdb_id) {
     console.log('Log movie:', imdb_id);
     
-    //obtener detalles de la película primero
-    fetch(`${API_BASE}/api/pelicula/${imdb_id}`)
-        .then(res => res.json())
+    api.get(`/api/pelicula/${imdb_id}`)
         .then(data => {
             const pelicula = data.peli;
             if (!pelicula) throw new Error("No se pudieron obtener detalles");
@@ -437,7 +408,6 @@ function mostrarModalLog(pelicula) {
     }, 100);
 }
 
-
 window.enviarLog = async function(imdb_id) {
     try {
         const rating = parseFloat(document.getElementById('ratingPersonal').value);
@@ -448,96 +418,71 @@ window.enviarLog = async function(imdb_id) {
             alert('Please enter a valid rating between 0 and 10');
             return;
         }
-        // obtener detalles completos de la película desde OMDB
-        const respuestaDetalles = await fetch(`${API_BASE}/api/pelicula/${imdb_id}`);
-        const resultadoDetalles = await respuestaDetalles.json();
+        
+        const resultadoDetalles = await api.get(`/api/pelicula/${imdb_id}`);
         const pelicula = resultadoDetalles.peli;
         
         if (!pelicula) {
             throw new Error("Couldn't get movie details");
         }
         
-        // enviar log con datos necesarios
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/vistas`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                imdb_id: pelicula.imdb_id,
-                titulo: pelicula.titulo,
-                anio: pelicula.anio,
-                duracion_minutos: pelicula.duracion_minutos,
-                director: pelicula.director,
-                generos: pelicula.generos,
-                rating_imdb: pelicula.rating_imdb,
-                poster: pelicula.poster,
-                rating_personal: rating,
-                resenia: resenia || '',
-                fecha_visto: fechaVisto || new Date().toISOString().split('T')[0]
-            })
+        await api.post('/api/mis-pelis/vistas', {
+            imdb_id: pelicula.imdb_id,
+            titulo: pelicula.titulo,
+            anio: pelicula.anio,
+            duracion_minutos: pelicula.duracion_minutos,
+            director: pelicula.director,
+            generos: pelicula.generos,
+            rating_imdb: pelicula.rating_imdb,
+            poster: pelicula.poster,
+            rating_personal: rating,
+            resenia: resenia || '',
+            fecha_visto: fechaVisto || new Date().toISOString().split('T')[0]
         });
         
-        const resultado = await respuesta.json();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalLogPelicula'));
+        modal.hide();
         
-        if (respuesta.ok) {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalLogPelicula'));
-            modal.hide();
-            
-            alert('Movie logged successfully');
-            
-            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
-                setTimeout(() => cargarLogs(), 300);
-            }
-        } else {
-            alert(`Error: ${resultado.error || 'Failed to save log'}`);
+        alert('Movie logged successfully');
+        
+        if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
+            setTimeout(() => cargarLogs(), 300);
         }
         
     } catch (error) {
         console.error('Error saving log:', error);
-        alert('Network error');
+        alert(`Error: ${error.message}`);
     }
 };
-
 
 export async function eliminarLog(id) {
     if (!confirm('Are you sure you want to delete this log?')) return;
     
     console.log('Intentando eliminar log con ID:', id);
     console.log('Tipo de ID:', typeof id);
-    console.log('URL:', `${API_BASE}/api/mis-pelis/vistas/${id}`);
+    console.log('URL:', `/api/mis-pelis/vistas/${id}`);
 
     try {
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/vistas/${id}`, {
-            method: 'DELETE'
-        });
+        await api.delete(`/api/mis-pelis/vistas/${id}`);
         
-        if (respuesta.ok) {
-            const resultado = await respuesta.json();
-            
-            // refrescar logs
-            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
-                setTimeout(() => cargarLogs(), 300);
-            }
-            
-            // volver a estado inicial
-            const columnaDerecha = document.getElementById('columna-derecha');
-            columnaDerecha.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="text-muted mb-3">
-                        <h4>Select a movie to see details</h4>
-                        <i class="bi bi-film display-1"></i>
-                    </div>
-                </div>
-            `;
-            
-        } else {
-            const resultado = await respuesta.json();
-            alert(`Error: ${resultado.error || 'Failed to delete log'}`);
+        // refrescar logs
+        if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
+            setTimeout(() => cargarLogs(), 300);
         }
+        
+        // volver a estado inicial
+        const columnaDerecha = document.getElementById('columna-derecha');
+        columnaDerecha.innerHTML = `
+            <div class="text-center py-5">
+                <div class="text-muted mb-3">
+                    <h4>Select a movie to see details</h4>
+                    <i class="bi bi-film display-1"></i>
+                </div>
+            </div>
+        `;
         
     } catch (error) {
         console.error('Error deleting log:', error);
-        alert('Network error');
+        alert(`Error: ${error.message}`);
     }
 }
-
-

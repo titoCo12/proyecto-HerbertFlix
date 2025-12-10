@@ -82,5 +82,19 @@
     "rating_personal": 10,
     "resenia": "La vi devuelta y me inspiro para hacer esta pagina de mal gusto :)",
     "fecha_visto": "2025-12-10"
+  },
+  {
+    "id": 1765378703308,
+    "imdb_id": "tt0477348",
+    "titulo": "No Country for Old Men",
+    "anio": "2007",
+    "duracion_minutos": 122,
+    "director": "Ethan Coen, Joel Coen",
+    "generos": "Crime, Drama, Thriller",
+    "rating_imdb": 8.2,
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjA5Njk3MjM4OV5BMl5BanBnXkFtZTcwMTc5MTE1MQ@@._V1_SX300.jpg",
+    "rating_personal": 8.5,
+    "resenia": "Javier Bardem me da miedo",
+    "fecha_visto": "2025-12-10"
   }
 ]

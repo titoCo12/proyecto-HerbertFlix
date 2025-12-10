@@ -1,14 +1,9 @@
-// renders.js
-const API_BASE = 'http://localhost:3000';
-
+import { api } from './utils/api.js';
 
 export async function verificarWatchlist(imdb_id) {
     try {
-        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/watchlist/${imdb_id}`);
-        const data = await respuesta.json();
-        
+        const data = await api.get(`/api/mis-pelis/watchlist/${imdb_id}`);
         return data.existe && data.peli !== null;
-        
     } catch (error) {
         console.error('Error:', error);
         return false;
@@ -46,7 +41,7 @@ export async function renderizarDetalles(pelicula, esLog = false) {
     const posterUrl = obtenerPosterSeguro(pelicula.poster);
     const posterGrande = posterUrl.replace('SX300', 'SX600').replace('300', '500');
 
-        if (esLog) {
+    if (esLog) {
         // RENDER PARA LOGS
         columnaDerecha.innerHTML = `
             <div class="p-4">
