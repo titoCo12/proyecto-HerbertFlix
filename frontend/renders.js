@@ -40,11 +40,74 @@ export function renderizarLista(columna, titulo, cantidad, itemsHtml) {
     `;
 }
 
-export async function renderizarDetalles(pelicula) {
+export async function renderizarDetalles(pelicula, esLog = false) {
     const columnaDerecha = document.getElementById('columna-derecha');
     
     const posterUrl = obtenerPosterSeguro(pelicula.poster);
     const posterGrande = posterUrl.replace('SX300', 'SX600').replace('300', '500');
+
+        if (esLog) {
+        // RENDER PARA LOGS
+        columnaDerecha.innerHTML = `
+            <div class="p-4">
+                <!-- Información básica reducida -->
+                <img src="${posterGrande}" 
+                     class="img-fluid rounded shadow" 
+                     style="max-height: 400px;"
+                     alt="${pelicula.titulo}">
+                <h2>${pelicula.titulo}</h2>
+                <div class="mb-3">
+                    <span class="badge bg-primary">${pelicula.anio}</span>
+                    <span class="badge bg-secondary">${pelicula.director || 'Director desconocido'}</span>
+                </div>
+                
+                <!-- Sección de datos del log -->
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-journal-check"></i> Your Log
+                    </div>
+                    <div class="card-body">
+                        <!-- Rating personal -->
+                        <div class="mb-3">
+                            <h5>Your Rating</h5>
+                            <div class="display-4 text-warning">
+                                ${'★'.repeat(Math.max(0, Math.round(pelicula.rating_personal || 0)))}
+                                ${'☆'.repeat(Math.max(0, 5 - Math.round(pelicula.rating_personal || 0)))}
+                            </div>
+                            <p class="text-muted">${pelicula.rating_personal || 0}/10</p>
+                        </div>
+                        
+                        <!-- Reseña -->
+                        <div class="mb-3">
+                            <h5>Review</h5>
+                            <div class="p-3 bg-light rounded">
+                                ${pelicula.resenia || '<em class="text-muted">No review written</em>'}
+                            </div>
+                        </div>
+                        
+                        <!-- Fecha visto -->
+                        <div class="mb-3">
+                            <h5>Watched on</h5>
+                            <p class="text-muted">
+                                <i class="bi bi-calendar"></i> ${pelicula.fecha_visto || 'Date not specified'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón para eliminar log -->
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-danger" 
+                    style="color: #dc3545 !important; border-color: #dc3545 !important; 
+                    background-color: white !important;"
+                    onclick="eliminarLog(${pelicula.id})">
+                        <i class="bi bi-trash"></i> Remove Log
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
     
     const estaEnWatchlist = await verificarWatchlist(pelicula.imdb_id);
     

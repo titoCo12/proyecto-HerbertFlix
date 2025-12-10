@@ -6,7 +6,7 @@ import {
     seleccionarPelicula, 
     agregarAWatchlist, 
     removerDeWatchlist, 
-    loggearPelicula 
+    loggearPelicula,
 } from './handlers.js';
 
 // Exportar funciones al scope global para HTML

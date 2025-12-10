@@ -53,7 +53,8 @@ export async function cargarLogs() {
 
         const pelis = visualizaciones.map(p => {
             return `
-                <div class="peli-listada p-3 border-bottom">
+                <div class="peli-listada p-3 border-bottom" 
+                onclick="seleccionarPelicula(${JSON.stringify(p).replace(/"/g, '&quot;')})">
                     <div class="d-flex">
                         <img src="${obtenerPosterSeguro(p.poster)}"
                             style="width:50px;height:75px;object-fit:cover;border-radius:4px;">
@@ -149,13 +150,23 @@ export async function seleccionarPelicula(pelicula) {
     const columnaDerecha = document.getElementById('columna-derecha');
     if (!columnaDerecha) return;
     
+    const esLog = pelicula.rating_personal !== undefined || 
+                  pelicula.resenia !== undefined || 
+                  pelicula.fecha_visto !== undefined;
+    
+    if (esLog) {
+        // Es un log, mostrar directamente
+        renderizarDetalles(pelicula, true);
+        return;
+    }
+
     columnaDerecha.innerHTML = `
         <div class="text-center p-5">
             <div class="spinner-border"></div>
             <p class="mt-2">Loading movie details...</p>
         </div>
     `;
-    
+
     try {
         const imdbID = pelicula.imdb_id;
         if (!imdbID) {

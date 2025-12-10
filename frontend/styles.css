@@ -116,6 +116,10 @@ main {
     background-color: #abb5ab;
 }
 
+#columna-derecha {
+    background-color: #e9f8e3;
+}
+
 .contenido {
     background-color: #e2e2e6;
     height: 100vh;
