@@ -98,5 +98,25 @@
     "generos": "Documentary, Music",
     "rating_imdb": 8,
     "poster": "https://m.media-amazon.com/images/M/MV5BMTQwNTE2MTE5OF5BMl5BanBnXkFtZTcwNjY0NDIzMQ@@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0145487",
+    "titulo": "Spider-Man",
+    "anio": "2002",
+    "duracion_minutos": 121,
+    "director": "Sam Raimi",
+    "generos": "Action, Adventure, Sci-Fi",
+    "rating_imdb": 7.4,
+    "poster": "https://m.media-amazon.com/images/M/MV5BZWM0OWVmNTEtNWVkOS00MzgyLTkyMzgtMmE2ZTZiNjY4MmFiXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "imdb_id": "tt0106308",
+    "titulo": "Army of Darkness",
+    "anio": "1992",
+    "duracion_minutos": 81,
+    "director": "Sam Raimi",
+    "generos": "Comedy, Horror",
+    "rating_imdb": 7.4,
+    "poster": "https://m.media-amazon.com/images/M/MV5BYzU4ZDFmNzEtNmE2Ny00OTA1LWEyMmMtZjFiOWM0MGM3YTQ1XkEyXkFqcGc@._V1_SX300.jpg"
   }
 ]

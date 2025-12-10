@@ -1,4 +1,3 @@
-// handlers.js
 import { mostrarSpinner, renderizarLista, obtenerPosterSeguro, renderizarDetalles } from './renders.js';
 
 const API_BASE = 'http://localhost:3000';
@@ -251,7 +250,166 @@ export async function removerDeWatchlist(imdb_id) {
     }
 }
 
+
 export function loggearPelicula(imdb_id) {
     console.log('Log movie:', imdb_id);
-    // TODO: Implementar
+    
+    //obtener detalles de la película primero
+    fetch(`${API_BASE}/api/pelicula/${imdb_id}`)
+        .then(res => res.json())
+        .then(data => {
+            const pelicula = data.peli;
+            if (!pelicula) throw new Error("No se pudieron obtener detalles");
+            
+            mostrarModalLog(pelicula);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error loading movie details');
+        });
 }
+
+function mostrarModalLog(pelicula) {
+    const modalHTML = `
+        <div class="modal fade" id="modalLogPelicula" tabindex="-1" aria-labelledby="modalLogLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLogLabel">
+                            <i class="bi bi-journal-plus"></i> Log "${pelicula.titulo}"
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Rating personal -->
+                        <div class="mb-3">
+                            <label for="ratingPersonal" class="form-label">
+                                Your Rating (0-10)
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <input type="range" class="form-range flex-grow-1 me-3" 
+                                       id="ratingPersonal" min="0" max="10" step="0.5" value="5">
+                                <span id="ratingValue" class="badge bg-warning fs-6">5.0</span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <span>0</span>
+                                <span class="float-end">10</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Reseña -->
+                        <div class="mb-3">
+                            <label for="reseniaText" class="form-label">
+                                Review (optional)
+                            </label>
+                            <textarea class="form-control" id="reseniaText" 
+                                      rows="4" placeholder="What did you think of this movie?"></textarea>
+                        </div>
+                        
+                        <!-- Fecha visto (opcional) -->
+                        <div class="mb-3">
+                            <label for="fechaVisto" class="form-label">
+                                Watched Date (optional)
+                            </label>
+                            <input type="date" class="form-control" id="fechaVisto" 
+                                   value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        style="color: #dc3545 !important; border-color: #dc3545 !important; 
+                        background-color: white !important;">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" 
+                        onclick="enviarLog('${pelicula.imdb_id}')"
+                        style="color: #0a748aff !important; border-color: #0d89a2ff !important; 
+                        background-color: white !important;">
+                            <i class="bi bi-check-circle"></i> Save Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer);
+    
+    setTimeout(() => {
+        const modal = new bootstrap.Modal(document.getElementById('modalLogPelicula'));
+        modal.show();
+        
+        const ratingInput = document.getElementById('ratingPersonal');
+        const ratingValue = document.getElementById('ratingValue');
+        
+        ratingInput.addEventListener('input', function() {
+            ratingValue.textContent = parseFloat(this.value).toFixed(1);
+        });
+        
+        document.getElementById('modalLogPelicula').addEventListener('hidden.bs.modal', function() {
+            modalContainer.remove();
+        });
+    }, 100);
+}
+
+
+window.enviarLog = async function(imdb_id) {
+    try {
+        const rating = parseFloat(document.getElementById('ratingPersonal').value);
+        const resenia = document.getElementById('reseniaText').value.trim();
+        const fechaVisto = document.getElementById('fechaVisto').value;
+        
+        if (isNaN(rating) || rating < 0 || rating > 10) {
+            alert('Please enter a valid rating between 0 and 10');
+            return;
+        }
+        // obtener detalles completos de la película desde OMDB
+        const respuestaDetalles = await fetch(`${API_BASE}/api/pelicula/${imdb_id}`);
+        const resultadoDetalles = await respuestaDetalles.json();
+        const pelicula = resultadoDetalles.peli;
+        
+        if (!pelicula) {
+            throw new Error("Couldn't get movie details");
+        }
+        
+        // enviar log con datos necesarios
+        const respuesta = await fetch(`${API_BASE}/api/mis-pelis/vistas`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                imdb_id: pelicula.imdb_id,
+                titulo: pelicula.titulo,
+                anio: pelicula.anio,
+                duracion_minutos: pelicula.duracion_minutos,
+                director: pelicula.director,
+                generos: pelicula.generos,
+                rating_imdb: pelicula.rating_imdb,
+                poster: pelicula.poster,
+                rating_personal: rating,
+                resenia: resenia || '',
+                fecha_visto: fechaVisto || new Date().toISOString().split('T')[0]
+            })
+        });
+        
+        const resultado = await respuesta.json();
+        
+        if (respuesta.ok) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalLogPelicula'));
+            modal.hide();
+            
+            alert('Movie logged successfully');
+            
+            if (document.querySelector('#columna-izquierda h4')?.textContent.includes('Logged movies')) {
+                setTimeout(() => cargarLogs(), 300);
+            }
+        } else {
+            alert(`Error: ${resultado.error || 'Failed to save log'}`);
+        }
+        
+    } catch (error) {
+        console.error('Error saving log:', error);
+        alert('Network error');
+    }
+};

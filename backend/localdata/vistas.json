@@ -20,7 +20,7 @@
     "anio": "2016",
     "duracion_minutos": 128,
     "director": "Damien Chazelle",
-    "generos":"Comedia, Drama, Música, Musical, Romance",
+    "generos": "Comedia, Drama, Música, Musical, Romance",
     "rating_imdb": 8,
     "rating_personal": 8.5,
     "resenia": "Muy linda pelicula",
@@ -54,5 +54,40 @@
     "resenia": "La pelicula dura mucho pero es ideal para ver en un dia libre",
     "fecha_visto": "2025-11-25",
     "poster": "https://m.media-amazon.com/images/M/MV5BMTkxYjU1OTMtYWViZC00ZjAzLWI3MDktZGQ2N2VmMjVjNDRlXkEyXkFqcGc@._V1_SX300.jpg"
+  },
+  {
+    "id": 1765339860105,
+    "imdb_id": "tt0092890",
+    "rating_personal": 9.5,
+    "resenia": "",
+    "fecha_visto": "2025-12-10"
+  },
+  {
+    "id": 1765340316873,
+    "imdb_id": "tt0104257",
+    "titulo": "A Few Good Men",
+    "anio": "1992",
+    "duracion_minutos": 138,
+    "director": "Rob Reiner",
+    "generos": "Drama, Thriller",
+    "rating_imdb": 7.7,
+    "poster": "https://m.media-amazon.com/images/M/MV5BOGVhMTUwYzEtZGQ1ZC00Nzg1LTk0OGUtMDk0NDM0ZmZlN2E0XkEyXkFqcGc@._V1_SX300.jpg",
+    "rating_personal": 9,
+    "resenia": "",
+    "fecha_visto": "2025-12-10"
+  },
+  {
+    "id": 1765340458396,
+    "imdb_id": "tt0089885",
+    "titulo": "Re-Animator",
+    "anio": "1985",
+    "duracion_minutos": 84,
+    "director": "Stuart Gordon",
+    "generos": "Comedy, Horror, Sci-Fi",
+    "rating_imdb": 7.1,
+    "poster": "https://m.media-amazon.com/images/M/MV5BZGZhYzk5MDEtOTc2Yi00ZTAyLWI1MjctZDYzYzhmNzgyZThlXkEyXkFqcGc@._V1_SX300.jpg",
+    "rating_personal": 10,
+    "resenia": "La vi denuevo y me inspiro para hacer esta pagina de mal gusto :)",
+    "fecha_visto": "2025-12-10"
   }
 ]
