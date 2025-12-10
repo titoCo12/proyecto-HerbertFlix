@@ -1,3 +1,5 @@
 # HerbertFlix
-HerbertFlix es un proyecto libre, con backend hecho con Javascript y Node y Front end vanilla usando componentes de Bootstrap.
+HerbertFlix es un sitio de reseñas de peliculas al estilo de letterbox/imdb. El proyecto esta conformado por un Backend hecho con Javascript y Node, y un Frontend vanilla usando componentes visuales de Bootstrap. 
+
+
 
