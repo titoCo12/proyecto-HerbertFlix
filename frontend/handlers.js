@@ -43,7 +43,7 @@ export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusq
     mostrarSpinner(columna);
 
     try {
-        // Construir URL con parámetros - SIEMPRE enviar ordenar_por y orden
+        // armar URL con parámetros
         let url = `${API_BASE}/api/mis-pelis/vistas`;
         const params = new URLSearchParams();
         
@@ -51,7 +51,6 @@ export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusq
             params.append('q', textoBusqueda.trim());
         }
         
-        // Siempre enviar parámetros de ordenamiento
         params.append('ordenar_por', ordenarPor);
         params.append('orden', orden);
         
@@ -102,7 +101,7 @@ export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusq
             </div>
         `;
 
-        // Generar lista de logs (datos YA vienen filtrados y ordenados del backend)
+        // generar lista de logs (ya vienen filtrados y ordenados por mi api)
         const pelis = visualizaciones.map(p => {
             return `
                 <div class="peli-listada p-3 border-bottom" 
