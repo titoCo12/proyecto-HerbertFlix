@@ -37,23 +37,76 @@ export async function cargarWatchlist() {
     }
 }
 
-export async function cargarLogs() {
+
+export async function cargarLogs(ordenarPor = 'titulo', orden = 'asc', textoBusqueda = '') {
     const columna = document.getElementById('columna-izquierda');
     mostrarSpinner(columna);
 
     try {
-        const r = await fetch(`${API_BASE}/api/mis-pelis/vistas`, { cache: "no-store" });
+        // Construir URL con parámetros - SIEMPRE enviar ordenar_por y orden
+        let url = `${API_BASE}/api/mis-pelis/vistas`;
+        const params = new URLSearchParams();
+        
+        if (textoBusqueda.trim()) {
+            params.append('q', textoBusqueda.trim());
+        }
+        
+        // Siempre enviar parámetros de ordenamiento
+        params.append('ordenar_por', ordenarPor);
+        params.append('orden', orden);
+        
+        url += `?${params.toString()}`;
+
+        const r = await fetch(url, { cache: "no-store" });
         const { resultados = 0, visualizaciones = [] } = await r.json();
 
         if (resultados === 0) {
-            columna.innerHTML = `<div class="p-4 text-center"><h5>No movie logged yet</h5></div>`;
+            columna.innerHTML = `
+                <div class="p-4 text-center">
+                    <h5>No movie logged yet</h5>
+                    ${textoBusqueda.trim() ? `<p class="text-muted">No results for "${textoBusqueda}"</p>` : ''}
+                </div>`;
             return;
         }
 
+        // Header con controles
+        const headerHTML = `
+            <div class="p-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">Logged movies <small class="text-muted">(${resultados})</small></h4>
+                    <div class="d-flex align-items-center">
+                        <span class="me-2 small">Order by:</span>
+                        <select class="form-select form-select-sm me-2" style="width: auto;" 
+                                onchange="cambiarOrdenLogs(this.value, '${orden}')">
+                            <option value="titulo" ${ordenarPor === 'titulo' ? 'selected' : ''}>Title</option>
+                            <option value="anio" ${ordenarPor === 'anio' ? 'selected' : ''}>Year</option>
+                            <option value="rating_personal" ${ordenarPor === 'rating_personal' ? 'selected' : ''}>Personal rating</option>
+                            <option value="fecha_visto" ${ordenarPor === 'fecha_visto' ? 'selected' : ''}>Date seen</option>
+                        </select>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                onclick="alternarOrdenLogs('${ordenarPor}', '${orden}')">
+                            ${orden === 'asc' ? 
+                              '<i class="bi bi-sort-down"></i>' : 
+                              '<i class="bi bi-sort-up"></i>'}
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <input type="text" 
+                           class="form-control form-control-sm" 
+                           placeholder="Search in logs..." 
+                           id="busquedaLogs"
+                           value="${textoBusqueda}"
+                           onkeyup="buscarEnLogs(this.value)">
+                </div>
+            </div>
+        `;
+
+        // Generar lista de logs (datos YA vienen filtrados y ordenados del backend)
         const pelis = visualizaciones.map(p => {
             return `
                 <div class="peli-listada p-3 border-bottom" 
-                onclick="seleccionarPelicula(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                     onclick="seleccionarPelicula(${JSON.stringify(p).replace(/"/g, '&quot;')})">
                     <div class="d-flex">
                         <img src="${obtenerPosterSeguro(p.poster)}"
                             style="width:50px;height:75px;object-fit:cover;border-radius:4px;">
@@ -74,12 +127,43 @@ export async function cargarLogs() {
             `;
         }).join('');
 
-        renderizarLista(columna, "Logged movies", resultados, pelis);
+        columna.innerHTML = headerHTML + `
+            <div style="max-height: calc(100vh - 120px); overflow-y: auto;">
+                ${pelis}
+            </div>
+        `;
 
     } catch (e) {
-        columna.innerHTML = `<div class="alert alert-danger m-3">Error</div>`;
+        console.error('Error loading logs:', e);
+        columna.innerHTML = `<div class="alert alert-danger m-3">Error loading logs</div>`;
     }
 }
+
+
+window.cambiarOrdenLogs = function(ordenarPor) {
+    const busquedaInput = document.getElementById('busquedaLogs');
+    const textoBusqueda = busquedaInput ? busquedaInput.value : '';
+    cargarLogs(ordenarPor, 'asc', textoBusqueda);
+};
+
+
+window.buscarEnLogs = function(texto) {
+    clearTimeout(window.busquedaTimeout);
+    window.busquedaTimeout = setTimeout(() => {
+        const select = document.querySelector('#columna-izquierda select');
+        const ordenarPor = select ? select.value : 'titulo';
+        cargarLogs(ordenarPor, 'asc', texto);
+    }, 300);
+};
+
+
+window.alternarOrdenLogs = function(ordenarPor, ordenActual) {
+    const nuevoOrden = ordenActual === 'asc' ? 'desc' : 'asc';
+    const busquedaInput = document.getElementById('busquedaLogs');
+    const textoBusqueda = busquedaInput ? busquedaInput.value : '';
+    cargarLogs(ordenarPor, nuevoOrden, textoBusqueda);
+};
+
 
 export async function buscarOMDB(texto, pag = 1) {
     const columna = document.getElementById('columna-izquierda');
@@ -456,3 +540,5 @@ export async function eliminarLog(id) {
         alert('Network error');
     }
 }
+
+

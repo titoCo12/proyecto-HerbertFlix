@@ -19,5 +19,7 @@ window.agregarAWatchlist = agregarAWatchlist;
 window.removerDeWatchlist = removerDeWatchlist;
 window.loggearPelicula = loggearPelicula;
 window.eliminarLog = eliminarLog;
+window.cambiarOrdenLogs = cambiarOrdenLogs;
+window.buscarEnLogs = buscarEnLogs;
 
 console.log('app cargada');
