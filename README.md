@@ -1,5 +1,5 @@
 # HerbertFlix
-**HerbertFlix** es un sitio de reseñas de películas al estilo de Letterboxd/IMDB. El proyecto esta conformado por un Backend hecho con Javascript y Node, y un Frontend vanilla usando componentes visuales de Bootstrap.
+**HerbertFlix** es un sitio de reseñas de películas al estilo de Letterboxd/IMDB. El proyecto está conformado por un backend hecho con JavaScript y Node, y un frontend vanilla usando componentes visuales de Bootstrap.
 
 ## Funcionalidades
 - **Búsqueda de películas a través de la API externa.**
