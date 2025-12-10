@@ -14,7 +14,7 @@
 ## Tecnologias
 ### Backend:
 - **Node.js y Express** para API interna
-- **Javascript** para funciones Helper de busqueda/filtrado/ordenamiento
+- **JavaScript** para funciones Helper de busqueda/filtrado/ordenamiento
 - **Axios** para requests HTTP a la API externa OMDB
 - **CORS** para para permisos cross-join de front a back
 - **Escritura y lectura de archivos JSON locales** para emular registros de un usuario
