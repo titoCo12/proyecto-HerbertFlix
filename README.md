@@ -47,7 +47,7 @@ npm install
 npm start
 ```
 
-4. Abrir Front:
+4. Abrir Front (en una segunda terminal):
 ```bash
 # Recomiendo como alternativa usar Live Server en VS Code
 # alternativa http server:
